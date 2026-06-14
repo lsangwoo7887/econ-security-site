@@ -1,14 +1,1811 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" dir="ltr">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ESI 관리자 — 경제안보 인사이트</title>
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <title>경제안보 인사이트 — Economic Security Insight</title>
+  <meta name="description" content="첨단기술경쟁·반도체·AI·공급망·에너지안보·식량안보 전문 미디어" />
+
+  <!-- 폰트: Foreign Affairs 스타일 세리프 + 함초롱 바탕체 계열 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Source+Sans+3:wght@400;600;700&family=Noto+Serif+KR:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:  #112e51;
+      --blue:  #205493;
+      --wine:  #7a1a35;
+      --gold:  #fdb81e;
+      --white: #ffffff;
+      --light: #f1f1f1;
+      --gray:  #5b616b;
+      --text:  #1a1a1a;
+      --border:#d6d7d9;
+      --link:  #0071bc;
+      /* ── Foreign Affairs 스타일 세리프 타이포그래피 ── */
+      --font-body:    'Lora', 'HCR Batang', 'Noto Serif KR', Georgia, serif;
+      --font-heading: 'Playfair Display', 'HCR Batang', 'Noto Serif KR', Georgia, serif;
+      --font-ui:      'Source Sans 3', 'Noto Serif KR', sans-serif;
+      --font: var(--font-body); /* 하위호환 */
+    }
+    html { font-size: 17px; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--white); line-height: 1.75; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; color: var(--navy); }
+    h1, h2, h3, h4 { font-family: var(--font-heading); }
+
+    /* ── 언어별 폰트 ── */
+    :lang(ko) { font-family: 'HCR Batang', 'Noto Serif KR', Georgia, serif; }
+    :lang(en) { font-family: 'Lora', Georgia, serif; }
+    :lang(zh) { font-family: 'Noto Sans SC', sans-serif; }
+    :lang(ar) { font-family: 'Noto Sans Arabic', sans-serif; }
+    :lang(ru) { font-family: 'Lora', Georgia, serif; }
+    :lang(es) { font-family: 'Lora', Georgia, serif; }
+
+    /* ── RTL 지원 (아랍어) ── */
+    [dir="rtl"] .utility-bar-inner,
+    [dir="rtl"] .site-header-inner,
+    [dir="rtl"] .primary-nav-inner,
+    [dir="rtl"] .footer-bottom,
+    [dir="rtl"] .alert-bar-inner,
+    [dir="rtl"] .topic-tabs-inner,
+    [dir="rtl"] .section-head,
+    [dir="rtl"] .footer-brand-row { flex-direction: row-reverse; }
+    [dir="rtl"] .hero-main-content { text-align: right; }
+    [dir="rtl"] .hero-sidebar-item { text-align: right; }
+    [dir="rtl"] .article-card-img .cat-badge { left: auto; right: 10px; }
+    [dir="rtl"] .article-list-item { direction: rtl; }
+    [dir="rtl"] .footer-grid { direction: rtl; }
+    [dir="rtl"] .topic-tabs-label { margin-right: 0; margin-left: 20px; }
+
+    /* ── UTILITY BAR ── */
+    .utility-bar { background: var(--navy); border-bottom: 4px solid var(--gold); font-family:var(--font-ui); }
+    .utility-bar-inner { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; height:40px; }
+    .utility-bar-left span { color:#dce4ef; font-size:13px; font-family:var(--font-ui); }
+    .flag-stripe { display:inline-block; width:18px; height:11px; background:repeating-linear-gradient(to bottom,#BF0A30 0,#BF0A30 1.1px,#fff 1.1px,#fff 2.2px); border:1px solid rgba(255,255,255,.3); vertical-align:middle; margin-right:5px; }
+    .utility-bar-right { display:flex; align-items:center; gap:10px; }
+    .utility-bar-right a { color:#dce4ef; font-size:13px; font-family:var(--font-ui); }
+    .utility-bar-right a:hover { color:var(--gold); text-decoration:underline; }
+
+    /* 언어 스위처 */
+    .lang-switcher { display:flex; align-items:center; gap:3px; }
+    .lang-btn {
+      background:transparent; border:1px solid rgba(255,255,255,.25);
+      color:#c8d4e8; font-size:11.5px; font-weight:600;
+      padding:2px 7px; cursor:pointer;
+      font-family:var(--font-ui); border-radius:2px;
+      transition:all .15s; letter-spacing:.02em;
+    }
+    .lang-btn:hover { background:rgba(255,255,255,.15); color:var(--gold); border-color:var(--gold); }
+    .lang-btn.active { background:rgba(255,255,255,.18); color:var(--gold); border-color:var(--gold); }
+    .lang-divider { color:rgba(255,255,255,.25); font-size:11px; }
+
+    /* ── SITE HEADER ── */
+    .site-header { background:var(--navy); padding:16px 0 14px; }
+    .site-header-inner { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; }
+    .site-branding { display:flex; align-items:center; gap:16px; }
+    /* ESI 스퀘어 로고 — The Economist 스타일 (선명한 빨강) */
+    .site-seal {
+      width:64px; height:64px; border-radius:3px;
+      background:#E3120B; border:0; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 2px 14px rgba(0,0,0,.50);
+    }
+    .site-seal svg { width:64px; height:64px; }
+    .site-title-block { color:var(--white); }
+    .site-name { font-family:var(--font-heading); font-size:1.65rem; font-weight:700; line-height:1.2; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+    .site-name .ko { font-size:1.6rem; font-family:'HCR Batang','Noto Serif KR',Georgia,serif; }
+    .site-name .en { font-size:.9rem; font-weight:400; font-style:italic; opacity:.8; letter-spacing:.03em; font-family:'Playfair Display',Georgia,serif; }
+    .site-sub { font-family:var(--font-ui); font-size:11px; opacity:.7; letter-spacing:.07em; margin-top:3px; text-transform:uppercase; }
+    .header-search { display:flex; align-items:center; }
+    .header-search form { display:flex; border:2px solid rgba(255,255,255,.35); border-radius:3px; overflow:hidden; }
+    .header-search input { background:transparent; border:none; color:#fff; font-family:var(--font-ui); font-size:14px; padding:8px 14px; width:200px; outline:none; }
+    .header-search input::placeholder { color:rgba(255,255,255,.5); }
+    .header-search button { background:rgba(255,255,255,.12); border:none; color:#fff; cursor:pointer; padding:8px 12px; font-size:14px; font-family:var(--font-ui); transition:background .15s; }
+    .header-search button:hover { background:rgba(255,255,255,.25); }
+
+    /* ── PRIMARY NAV ── */
+    .primary-nav { background:var(--blue); font-family:var(--font-ui); }
+    .primary-nav-inner { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; overflow-x:auto; }
+    .primary-nav a { font-family:var(--font-ui); color:var(--white); font-size:14px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:13px 14px; display:inline-block; text-decoration:none; border-bottom:3px solid transparent; transition:background .15s,border-color .15s; white-space:nowrap; }
+    .primary-nav a:hover, .primary-nav a.active { background:rgba(0,0,0,.15); border-bottom-color:var(--gold); text-decoration:none; color:var(--white); }
+
+    /* ── ALERT BAR ── */
+    .alert-bar { background:var(--wine); color:var(--white); padding:9px 20px; font-size:14px; font-family:var(--font-body); }
+    .alert-bar-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:10px; }
+    .alert-label { background:var(--white); color:var(--wine); font-family:var(--font-ui); font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding:2px 8px; border-radius:2px; flex-shrink:0; }
+    .alert-bar a { color:var(--white); text-decoration:underline; }
+
+    /* ── AD BANNER ── */
+    .ad-banner-wrap { background:var(--light); border-bottom:1px solid var(--border); text-align:center; padding:10px; }
+    .ad-banner-inner { display:inline-flex; background:#e8edf2; border:1px dashed #aab4be; min-height:90px; min-width:728px; align-items:center; justify-content:center; color:var(--gray); font-size:12px; letter-spacing:.08em; }
+
+    /* ── HERO ── */
+    .hero-section { background:var(--navy); }
+    .hero-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 340px; min-height:420px; }
+    .hero-main { background:linear-gradient(135deg,#0d2240 0%,#1a3a6e 50%,#0f2d52 100%); display:flex; flex-direction:column; justify-content:flex-end; padding:36px 40px; position:relative; overflow:hidden; }
+    .hero-main::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 75% 30%,rgba(32,84,147,.4) 0%,transparent 60%); }
+    .hero-main-content { position:relative; z-index:1; }
+    .hero-cat { display:inline-block; background:var(--wine); color:var(--white); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:3px 10px; margin-bottom:12px; }
+    .hero-main h1 { font-family:var(--font-heading); font-size:2.2rem; font-weight:700; color:var(--white); line-height:1.2; margin-bottom:12px; }
+    .hero-main p { font-family:var(--font-body); color:rgba(255,255,255,.85); font-size:1rem; line-height:1.75; max-width:600px; margin-bottom:18px; }
+    .hero-main .meta { font-family:var(--font-ui); color:rgba(255,255,255,.5); font-size:13px; margin-bottom:20px; letter-spacing:.03em; }
+    .btn-primary { display:inline-block; background:var(--white); color:var(--navy); font-family:var(--font-ui); font-weight:700; font-size:13px; letter-spacing:.08em; text-transform:uppercase; padding:10px 22px; border-radius:2px; text-decoration:none; transition:background .15s; }
+    .btn-primary:hover { background:var(--gold); color:var(--navy); text-decoration:none; }
+    .hero-sidebar { background:#0d2240; border-left:1px solid rgba(255,255,255,.1); display:flex; flex-direction:column; }
+    .hero-sidebar-title { background:var(--blue); color:var(--white); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; padding:12px 20px; }
+    .hero-sidebar-item { padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.07); transition:background .12s; }
+    .hero-sidebar-item:hover { background:rgba(255,255,255,.05); }
+    .hero-sidebar-item .cat { font-family:var(--font-ui); font-size:11.5px; font-weight:700; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; margin-bottom:4px; }
+    .hero-sidebar-item h3 { font-family:var(--font-heading); font-size:15px; font-weight:600; color:rgba(255,255,255,.9); line-height:1.4; }
+    .hero-sidebar-item h3 a { color:inherit; text-decoration:none; }
+    .hero-sidebar-item h3 a:hover { color:var(--white); }
+    .hero-sidebar-item .date { font-size:11.5px; color:rgba(255,255,255,.4); margin-top:5px; }
+
+    /* ── TOPIC TABS ── */
+    .topic-tabs { background:var(--light); border-bottom:2px solid var(--border); }
+    .topic-tabs-inner { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; align-items:center; overflow-x:auto; }
+    .topic-tabs-label { font-size:12px; font-weight:700; color:var(--navy); letter-spacing:.1em; text-transform:uppercase; padding:10px 0; margin-right:20px; white-space:nowrap; flex-shrink:0; }
+    .topic-tabs a { font-size:14px; color:var(--navy); padding:10px 13px; display:inline-block; border-bottom:3px solid transparent; text-decoration:none; white-space:nowrap; transition:border-color .15s,color .15s; }
+    .topic-tabs a:hover, .topic-tabs a.active { color:var(--blue); border-bottom-color:var(--blue); text-decoration:none; }
+
+    /* ══════════════════════════════════════════
+       BLOOMBERG-STYLE MARKET DATA
+    ══════════════════════════════════════════ */
+
+    /* ── TOP MARKET STRIP ── */
+    .market-strip {
+      background:#06101d;
+      border-bottom:1px solid rgba(30,212,168,.15);
+      font-family:var(--font-ui);
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .market-strip::-webkit-scrollbar { display:none; }
+    .market-strip-inner {
+      max-width:none; padding:0 20px;
+      display:flex; align-items:center;
+      white-space:nowrap; gap:0;
+      min-height:34px;
+    }
+    .ms-badge {
+      background:#1ed4a8; color:#06101d;
+      font-size:9.5px; font-weight:800;
+      letter-spacing:.14em; text-transform:uppercase;
+      padding:3px 9px; margin-right:14px;
+      border-radius:2px; flex-shrink:0;
+      display:flex; align-items:center; gap:5px;
+    }
+    .ms-live-dot {
+      width:5px; height:5px; border-radius:50%;
+      background:#06101d;
+      animation:live-dot 1.4s ease-in-out infinite;
+    }
+    @keyframes live-dot {
+      0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(6,16,29,.5)}
+      50%{opacity:.5;box-shadow:0 0 0 3px rgba(6,16,29,0)}
+    }
+    .ms-item {
+      color:#7a98b8; font-size:12px;
+      padding:0 13px; border-right:1px solid rgba(255,255,255,.07);
+      display:inline-flex; align-items:center; gap:4px;
+      cursor:default; transition:background .12s;
+      height:34px;
+    }
+    .ms-item:hover { background:rgba(255,255,255,.04); }
+    .ms-item:last-child { border-right:none; }
+    .ms-name { color:#4a6888; font-size:10.5px; margin-right:2px; }
+    .ms-val  { font-weight:700; color:#c8dcea; font-size:12.5px; font-variant-numeric:tabular-nums; }
+    .ms-chg  { font-size:10.5px; font-variant-numeric:tabular-nums; }
+
+    /* ── LEFT MARKET SIDEBAR ── */
+    .market-col { min-width:0; align-self:start; }
+    .mkt-live-hd {
+      font-family:var(--font-ui);
+      font-size:10px; font-weight:700; letter-spacing:.14em;
+      text-transform:uppercase; color:#1ed4a8;
+      padding:0 0 8px; margin-bottom:10px;
+      border-bottom:1px solid rgba(30,212,168,.2);
+      display:flex; align-items:center; gap:7px;
+    }
+    .mkt-live-dot {
+      width:7px; height:7px; border-radius:50%;
+      background:#1ed4a8; flex-shrink:0;
+      animation:mkt-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes mkt-pulse {
+      0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(30,212,168,.5)}
+      50%{opacity:.65;box-shadow:0 0 0 5px rgba(30,212,168,0)}
+    }
+    .mkt-time { margin-left:auto; color:#2a4060; font-size:9.5px; font-weight:400; }
+    .mkt-panel {
+      background:#070e1c;
+      border:1px solid rgba(255,255,255,.06);
+      border-top:2px solid #fdb81e;
+      margin-bottom:10px;
+      font-family:var(--font-ui);
+    }
+    .mkt-head {
+      background:#0a1527;
+      padding:7px 11px;
+      font-size:10.5px; font-weight:700;
+      letter-spacing:.13em; text-transform:uppercase;
+      color:#fdb81e;
+      border-bottom:1px solid rgba(255,255,255,.05);
+      display:flex; align-items:center; gap:5px;
+    }
+    .mkt-row {
+      display:grid; grid-template-columns:1fr auto;
+      align-items:center;
+      padding:5.5px 11px;
+      border-bottom:1px solid rgba(255,255,255,.025);
+      gap:6px;
+    }
+    .mkt-row:last-of-type { border-bottom:none; }
+    .mkt-row:hover { background:rgba(255,255,255,.025); }
+    .mkt-label { color:#5e7d98; font-size:11px; line-height:1.2; }
+    .mkt-label-sub { color:#344e66; font-size:9.5px; display:block; margin-top:1px; }
+    .mkt-right { text-align:right; }
+    .mkt-val {
+      display:block; font-weight:700;
+      font-size:12.5px; color:#cce0f0;
+      font-variant-numeric:tabular-nums;
+      letter-spacing:.01em;
+    }
+    .mkt-chg {
+      font-size:10px; display:block;
+      font-variant-numeric:tabular-nums;
+    }
+    .up   { color:#1ed4a8; }
+    .down { color:#ff5252; }
+    .mkt-ts {
+      font-size:9px; color:#1f3450;
+      padding:4px 11px 5px;
+      text-align:right;
+      border-top:1px solid rgba(255,255,255,.025);
+    }
+
+    /* Flash animations */
+    @keyframes fup { 0%{color:#1ed4a8;text-shadow:0 0 8px rgba(30,212,168,.6)} 100%{color:#cce0f0;text-shadow:none} }
+    @keyframes fdn { 0%{color:#ff5252;text-shadow:0 0 8px rgba(255,82,82,.6)}  100%{color:#cce0f0;text-shadow:none} }
+    .flash-up   { animation:fup .7s ease-out forwards; }
+    .flash-down { animation:fdn .7s ease-out forwards; }
+
+    /* ── MAIN CONTENT — 3-column layout ── */
+    .main-content { max-width:1200px; margin:0 auto; padding:32px 20px; display:grid; grid-template-columns:248px 1fr 272px; gap:24px; }
+
+    /* 3-col layout: 2-col article grid for better readability */
+    .content-col .articles-grid { grid-template-columns:repeat(2,1fr); }
+
+    /* Responsive: collapse left at 1280px */
+    @media(max-width:1280px) {
+      .main-content { grid-template-columns:1fr 272px; }
+      .market-col   { display:none; }
+      .content-col .articles-grid { grid-template-columns:repeat(3,1fr); }
+    }
+
+    .section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding-bottom:10px; border-bottom:3px solid var(--navy); }
+    .section-head h2 { font-family:var(--font-ui); font-size:.85rem; font-weight:700; color:var(--navy); letter-spacing:.12em; text-transform:uppercase; }
+    .section-head a { font-size:13px; color:var(--link); }
+    .section-head a:hover { text-decoration:underline; }
+
+    /* ── ARTICLE CARDS ── */
+    .articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-bottom:36px; }
+    .article-card { cursor:pointer; }
+    .article-card-img { height:170px; margin-bottom:12px; position:relative; overflow:hidden; }
+    .article-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease; }
+    .article-card:hover .article-card-img img { transform:scale(1.06); }
+    .article-card-img .cat-badge { position:absolute; top:10px; left:10px; background:var(--blue); color:var(--white); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:2px 8px; z-index:1; }
+    .img-tech  { background:linear-gradient(150deg,#0f2040 0%,#1a3a72 100%); }
+    .img-semi  { background:linear-gradient(150deg,#0d1e3c 0%,#16336e 100%); }
+    .img-chain { background:linear-gradient(150deg,#0e1f35 0%,#1c3554 100%); }
+    .img-energy{ background:linear-gradient(150deg,#1a1a10 0%,#3a3010 100%); }
+    .img-food  { background:linear-gradient(150deg,#0f1e10 0%,#1a3520 100%); }
+    .img-mineral{background:linear-gradient(150deg,#1e150a 0%,#3a2a10 100%); }
+    .article-card .article-cat { font-family:var(--font-ui); font-size:13px; font-weight:700; color:var(--blue); letter-spacing:.06em; text-transform:uppercase; margin-bottom:5px; }
+    .article-card h3 { font-family:var(--font-heading); font-size:1.13rem; font-weight:700; color:var(--text); line-height:1.35; margin-bottom:7px; }
+    .article-card h3 a { color:inherit; text-decoration:none; }
+    .article-card h3 a:hover { color:var(--link); text-decoration:underline; }
+    .article-card p { font-family:var(--font-body); font-size:.95rem; color:var(--gray); line-height:1.65; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .article-card .byline { font-family:var(--font-ui); font-size:12px; color:var(--gray); }
+
+    /* ── LIST ARTICLES ── */
+    .article-list { margin-bottom:36px; }
+    .article-list-item { display:grid; grid-template-columns:110px 1fr; gap:16px; padding:16px 0; border-bottom:1px solid var(--border); align-items:start; }
+    .article-list-item:first-child { border-top:1px solid var(--border); }
+    .list-thumb { height:75px; border-radius:1px; overflow:hidden; position:relative; }
+    .list-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .article-list-item .article-cat { font-family:var(--font-ui); font-size:12px; font-weight:700; color:var(--blue); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+    .article-list-item h3 { font-family:var(--font-heading); font-size:1.05rem; font-weight:600; color:var(--text); line-height:1.4; }
+    .article-list-item h3 a { color:inherit; text-decoration:none; }
+    .article-list-item h3 a:hover { color:var(--link); text-decoration:underline; }
+    .article-list-item .byline { font-size:12px; color:var(--gray); margin-top:5px; }
+
+    /* ── SIDEBAR ── */
+    .sidebar-widget { margin-bottom:28px; }
+    .widget-head { background:var(--navy); color:var(--white); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:10px 16px; }
+    .widget-body { border:1px solid var(--border); border-top:none; padding:16px; }
+    .newsletter-widget .widget-body p { font-size:14px; color:var(--gray); margin-bottom:12px; line-height:1.5; }
+    .newsletter-widget input[type="email"] { width:100%; padding:9px 12px; border:1px solid var(--border); font-family:var(--font-ui); font-size:14px; margin-bottom:8px; outline:none; }
+    .newsletter-widget input[type="email"]:focus { border-color:var(--blue); }
+    .btn-state { display:block; width:100%; background:var(--blue); color:var(--white); border:none; font-family:var(--font-ui); font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:10px; cursor:pointer; text-align:center; transition:background .15s; }
+    .btn-state:hover { background:var(--navy); }
+    .tag-cloud { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag { background:var(--light); border:1px solid var(--border); color:var(--text); font-size:12.5px; padding:4px 11px; cursor:pointer; text-decoration:none; transition:all .12s; }
+    .tag:hover { background:var(--blue); color:var(--white); border-color:var(--blue); text-decoration:none; }
+    .ad-widget .widget-body { background:var(--light); min-height:260px; display:flex; align-items:center; justify-content:center; color:var(--gray); font-size:12px; letter-spacing:.08em; text-align:center; }
+
+    /* ── SECTION DIVIDER ── */
+    .section-divider { border:none; border-top:3px solid var(--light); margin:36px 0 28px; }
+
+    /* ── DARK BAND ── */
+    .news-band { background:var(--navy); padding:36px 0; }
+    .news-band-inner { max-width:1200px; margin:0 auto; padding:0 20px; }
+    .news-band .section-head { border-bottom-color:rgba(255,255,255,.25); }
+    .news-band .section-head h2 { color:var(--white); }
+    .news-band .section-head a { color:var(--gold); }
+    .news-band .article-card .article-cat { color:var(--gold); }
+    .news-band .article-card h3 { color:var(--white); }
+    .news-band .article-card h3 a { color:var(--white); }
+    .news-band .article-card h3 a:hover { color:var(--gold); }
+    .news-band .article-card p { color:rgba(255,255,255,.62); }
+    .news-band .article-card .byline { color:rgba(255,255,255,.38); }
+
+    /* ── FOOTER ── */
+    footer { background:var(--navy); border-top:4px solid var(--gold); color:rgba(255,255,255,.7); padding:40px 0 20px; }
+    .footer-inner { max-width:1200px; margin:0 auto; padding:0 20px; }
+    .footer-brand-row { display:flex; align-items:center; gap:16px; margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,.12); }
+    .footer-seal {
+      width:50px; height:50px; border-radius:3px;
+      background:#E3120B; border:0; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 1px 8px rgba(0,0,0,.5);
+    }
+    .footer-seal svg { width:50px; height:50px; }
+    .footer-brand-text .name { font-size:1.1rem; font-weight:700; color:var(--white); }
+    .footer-brand-text .sub { font-size:12px; opacity:.6; letter-spacing:.06em; text-transform:uppercase; margin-top:2px; }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:32px; margin-bottom:32px; }
+    .footer-col-about p { font-size:14px; line-height:1.6; color:rgba(255,255,255,.62); }
+    .footer-col h4 { font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--white); margin-bottom:14px; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,.15); }
+    .footer-col a { display:block; color:rgba(255,255,255,.6); font-size:14px; padding:3px 0; text-decoration:none; }
+    .footer-col a:hover { color:var(--gold); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:16px; display:flex; justify-content:space-between; align-items:center; font-size:12.5px; }
+    .footer-bottom-links { display:flex; gap:20px; }
+    .footer-bottom-links a { color:rgba(255,255,255,.5); text-decoration:none; }
+    .footer-bottom-links a:hover { color:var(--gold); }
+
+    /* ── HERO BACKGROUND VISUAL ── */
+    .hero-main { position:relative; overflow:hidden; }
+    .hero-bg-svg {
+      position:absolute; inset:0; width:100%; height:100%;
+      pointer-events:none; z-index:0;
+    }
+    .hero-main-content { position:relative; z-index:1; }
+    /* pulsing node animation */
+    @keyframes node-pulse {
+      0%,100% { opacity:.18; r:4; }
+      50%      { opacity:.45; r:6; }
+    }
+    @keyframes node-pulse2 {
+      0%,100% { opacity:.12; r:3; }
+      50%      { opacity:.35; r:5; }
+    }
+    @keyframes data-flow {
+      0%   { stroke-dashoffset:200; opacity:0; }
+      20%  { opacity:.25; }
+      80%  { opacity:.25; }
+      100% { stroke-dashoffset:0; opacity:0; }
+    }
+    .n-pulse  { animation:node-pulse  3.5s ease-in-out infinite; }
+    .n-pulse2 { animation:node-pulse2 4.8s ease-in-out infinite; }
+    .data-line{ stroke-dasharray:8 6; animation:data-flow 4s linear infinite; }
+
+    /* ── BOOK REVIEW SECTION ── */
+    .book-review-section { background:#f8f6f1; border-top:3px solid var(--navy); padding:36px 0; }
+    .book-review-inner { max-width:1200px; margin:0 auto; padding:0 20px; }
+    .book-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:20px; }
+    .book-card { background:var(--white); border:1px solid var(--border); padding:0 0 16px; transition:box-shadow .18s; }
+    .book-card:hover { box-shadow:0 4px 18px rgba(0,0,0,.1); }
+    .book-cover {
+      height:150px; display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-heading); font-size:1.3rem; font-weight:700;
+      color:var(--white); padding:16px; text-align:center; line-height:1.3;
+      position:relative; overflow:hidden;
+    }
+    .book-cover::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+      background:var(--gold);
+    }
+    .bc-navy  { background:linear-gradient(145deg,#0a2442,#1a3a6e); }
+    .bc-wine  { background:linear-gradient(145deg,#4a1020,#7a1a35); }
+    .bc-teal  { background:linear-gradient(145deg,#063a40,#0b5360); }
+    .bc-dark  { background:linear-gradient(145deg,#1a1a2e,#2d3561); }
+    .book-card-body { padding:14px 16px 0; }
+    .book-type { font-family:var(--font-ui); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--wine); margin-bottom:6px; }
+    .book-card h3 { font-family:var(--font-heading); font-size:1rem; font-weight:700; color:var(--text); line-height:1.35; margin-bottom:6px; }
+    .book-card h3 a { color:inherit; text-decoration:none; }
+    .book-card h3 a:hover { color:var(--link); text-decoration:underline; }
+    .book-author { font-family:var(--font-ui); font-size:12.5px; color:var(--gray); font-style:italic; margin-bottom:8px; }
+    .book-snippet { font-family:var(--font-body); font-size:.88rem; color:var(--gray); line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    @media(max-width:900px){ .book-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:500px){ .book-grid{ grid-template-columns:1fr; } }
+
+    /* ── MEDIA & GOV TICKERS ── */
+    .ticker-section { overflow:hidden; display:flex; align-items:stretch; border-top:1px solid rgba(255,255,255,.08); }
+    .media-ticker { background:#0d2240; }
+    .gov-ticker   { background:#0a1a30; }
+    .ticker-badge {
+      font-family:var(--font-ui); font-size:10.5px; font-weight:700;
+      letter-spacing:.15em; text-transform:uppercase;
+      padding:0 18px; white-space:nowrap; flex-shrink:0;
+      display:flex; align-items:center;
+      border-right:1px solid rgba(255,255,255,.1);
+    }
+    .media-ticker .ticker-badge { background:var(--blue); color:var(--white); }
+    .gov-ticker   .ticker-badge { background:var(--wine); color:var(--white); }
+    .ticker-viewport { overflow:hidden; flex:1; position:relative; }
+    /* fade edges */
+    .ticker-viewport::before,
+    .ticker-viewport::after {
+      content:''; position:absolute; top:0; bottom:0; width:40px; z-index:2; pointer-events:none;
+    }
+    .media-ticker .ticker-viewport::before { left:0;  background:linear-gradient(to right,#0d2240,transparent); }
+    .media-ticker .ticker-viewport::after  { right:0; background:linear-gradient(to left,#0d2240,transparent); }
+    .gov-ticker   .ticker-viewport::before { left:0;  background:linear-gradient(to right,#0a1a30,transparent); }
+    .gov-ticker   .ticker-viewport::after  { right:0; background:linear-gradient(to left,#0a1a30,transparent); }
+
+    .ticker-track {
+      display:flex; align-items:center;
+      width:max-content; padding:0;
+      animation:ticker-move 50s linear infinite;
+    }
+    .ticker-track.slow { animation-duration:38s; }
+    .ticker-track:hover { animation-play-state:paused; }
+    .ticker-track a {
+      font-family:'Playfair Display',Georgia,serif;
+      font-size:.82rem; font-style:italic; font-weight:400;
+      color:rgba(220,228,239,.82); padding:10px 22px;
+      text-decoration:none; white-space:nowrap;
+      transition:color .15s;
+    }
+    .ticker-track a:hover { color:var(--gold); text-decoration:none; }
+    .ticker-dot { color:rgba(255,255,255,.2); font-size:6px; flex-shrink:0; }
+    @keyframes ticker-move {
+      from { transform:translateX(0); }
+      to   { transform:translateX(-50%); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1000px){
+      .hero-grid{grid-template-columns:1fr} .hero-sidebar{display:none}
+      .main-content{grid-template-columns:1fr} .sidebar-col{display:none} .market-col{display:none}
+      .content-col .articles-grid{grid-template-columns:repeat(2,1fr)} .footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:640px){
+      .site-name .en{display:none} .header-search{display:none}
+      .content-col .articles-grid{grid-template-columns:1fr} .footer-grid{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column;gap:10px;text-align:center}
+      .primary-nav a{padding:11px 10px;font-size:12px}
+      .ad-banner-inner{min-width:unset;width:100%}
+      .market-strip-inner{padding:0 12px;}
+    }
+  </style>
 </head>
 <body>
-  <!-- Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<!-- ① UTILITY BAR -->
+<div class="utility-bar">
+  <div class="utility-bar-inner">
+    <div class="utility-bar-left">
+      <span><span class="flag-stripe"></span><span data-i18n="site-desc">대한민국 경제안보 전문 미디어</span></span>
+    </div>
+    <div class="utility-bar-right">
+      <!-- 언어 전환 버튼 -->
+      <div class="lang-switcher" role="group" aria-label="Language selector">
+        <button class="lang-btn active" data-lang="ko" onclick="setLanguage('ko')">한국어</button>
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" data-lang="zh" onclick="setLanguage('zh')">中文</button>
+        <button class="lang-btn" data-lang="ru" onclick="setLanguage('ru')">РУС</button>
+        <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">عربي</button>
+        <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">ESP</button>
+      </div>
+      <span class="lang-divider">|</span>
+      <a href="#" data-i18n="nav-newsletter">뉴스레터 구독</a>
+      <a href="#" data-i18n="nav-login">로그인</a>
+    </div>
+  </div>
+</div>
+
+<!-- ② SITE HEADER -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="site-branding">
+      <!-- ESI 스퀘어 로고 — The Economist 스타일 (순수 빨간 배경·흰 글씨) -->
+      <div class="site-seal" aria-label="ESI 로고">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" fill="#E3120B"/>
+          <text x="32" y="43"
+            text-anchor="middle"
+            font-family="'Playfair Display', Georgia, serif"
+            font-weight="700"
+            font-size="24"
+            letter-spacing="3"
+            fill="white">ESI</text>
+        </svg>
+      </div>
+      <div class="site-title-block">
+        <div class="site-name">
+          <span class="ko" data-i18n="site-name">경제안보 인사이트</span>
+        </div>
+        <div class="site-sub" data-i18n="site-sub">첨단기술 · 반도체 · AI · 공급망 · 에너지 · 식량안보</div>
+      </div>
+    </div>
+    <div class="header-search">
+      <form action="#" method="get">
+        <input type="text" name="q" id="search-input" placeholder="기사 검색..." aria-label="검색" />
+        <button type="submit">🔍</button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- ③ PRIMARY NAV -->
+<nav class="primary-nav" aria-label="주요 메뉴">
+  <div class="primary-nav-inner">
+    <a href="#" class="active" data-i18n="nav-home">홈</a>
+    <a href="#" data-i18n="nav-daily" style="color:var(--gold);border-bottom:3px solid rgba(253,184,30,.4)">글로벌 경제안보 일일동향</a>
+    <a href="#" data-i18n="nav-tech">첨단기술경쟁</a>
+    <a href="#" data-i18n="nav-semi">반도체·AI</a>
+    <a href="#" data-i18n="nav-supply">공급망</a>
+    <a href="#" data-i18n="nav-energy">에너지안보</a>
+    <a href="#" data-i18n="nav-food">식량안보</a>
+    <a href="#" data-i18n="nav-mineral">핵심광물</a>
+    <a href="#" data-i18n="nav-sanctions">제재·수출통제</a>
+    <a href="#" data-i18n="nav-books">책·논문 리뷰</a>
+    <a href="#" data-i18n="nav-column">칼럼·기고</a>
+  </div>
+</nav>
+
+<!-- ③-b BLOOMBERG MARKET STRIP -->
+<div class="market-strip" role="complementary" aria-label="실시간 시장 지표">
+  <div class="market-strip-inner">
+    <div class="ms-badge"><span class="ms-live-dot"></span>LIVE</div>
+
+    <span class="ms-item">
+      <span class="ms-name">WTI</span>
+      <span class="ms-val" id="ms-wti">82.45</span>
+      <span class="ms-chg up" id="ms-wti-c">▲0.43%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">브렌트</span>
+      <span class="ms-val" id="ms-brent">85.20</span>
+      <span class="ms-chg up" id="ms-brent-c">▲0.21%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">두바이유</span>
+      <span class="ms-val" id="ms-dubai">84.75</span>
+      <span class="ms-chg down" id="ms-dubai-c">▼0.29%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">LNG</span>
+      <span class="ms-val" id="ms-lng">12.40</span>
+      <span class="ms-chg up" id="ms-lng-c">▲1.22%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">USD/KRW</span>
+      <span class="ms-val" id="ms-krw">1,348.5</span>
+      <span class="ms-chg down" id="ms-krw-c">▼0.15%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">EUR/USD</span>
+      <span class="ms-val" id="ms-eur">1.0825</span>
+      <span class="ms-chg up" id="ms-eur-c">▲0.07%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">USD/JPY</span>
+      <span class="ms-val" id="ms-jpy">155.85</span>
+      <span class="ms-chg up" id="ms-jpy-c">▲0.22%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">USD/CNY</span>
+      <span class="ms-val" id="ms-cny">7.248</span>
+      <span class="ms-chg down" id="ms-cny-c">▼0.17%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">DRAM DDR5</span>
+      <span class="ms-val" id="ms-dram">$3.42</span>
+      <span class="ms-chg up" id="ms-dram-c">▲0.59%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">HBM3e</span>
+      <span class="ms-val" id="ms-hbm">$16.20</span>
+      <span class="ms-chg down" id="ms-hbm-c">▼0.49%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">PX</span>
+      <span class="ms-val" id="ms-px">982</span>
+      <span class="ms-chg up" id="ms-px-c">▲0.82%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">에틸렌</span>
+      <span class="ms-val" id="ms-eth">780</span>
+      <span class="ms-chg down" id="ms-eth-c">▼0.64%</span>
+    </span>
+    <span class="ms-item">
+      <span class="ms-name">천연가스</span>
+      <span class="ms-val" id="ms-natgas">2.85</span>
+      <span class="ms-chg down" id="ms-natgas-c">▼1.38%</span>
+    </span>
+  </div>
+</div>
+
+<!-- ④ ALERT BAR -->
+<div class="alert-bar">
+  <div class="alert-bar-inner">
+    <span class="alert-label" data-i18n="alert-label">속보</span>
+    <span data-i18n="alert-text">미 상무부, 첨단 AI 반도체 추가 수출통제 발표 — 한국 기업 영향 분석</span>
+    &nbsp;<a href="#" data-i18n="read-more">전문 읽기 →</a>
+  </div>
+</div>
+
+<!-- ⑤ AD BANNER -->
+<div class="ad-banner-wrap">
+  <div class="ad-banner-inner">광고 영역 (728×90) — Google AdSense 코드 삽입 위치</div>
+</div>
+
+<!-- ⑥ HERO -->
+<section class="hero-section" aria-label="주요 기사">
+  <div class="hero-grid">
+    <div class="hero-main">
+      <!-- AI·공급망 네트워크 배경 시각화 -->
+      <svg class="hero-bg-svg" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+        <!-- 배경 그라디언트 -->
+        <defs>
+          <radialGradient id="glow1" cx="70%" cy="30%" r="40%">
+            <stop offset="0%" stop-color="#2e78d2" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="#0d2240" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glow2" cx="85%" cy="70%" r="30%">
+            <stop offset="0%" stop-color="#0b5360" stop-opacity=".22"/>
+            <stop offset="100%" stop-color="#0d2240" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="800" height="420" fill="url(#glow1)"/>
+        <rect width="800" height="420" fill="url(#glow2)"/>
+
+        <!-- ── 글로벌 네트워크 연결선 ── -->
+        <g stroke="rgba(100,180,255,.13)" stroke-width="1" fill="none">
+          <line x1="620" y1="60"  x2="720" y2="130"/>
+          <line x1="720" y1="130" x2="760" y2="240"/>
+          <line x1="760" y1="240" x2="680" y2="310"/>
+          <line x1="680" y1="310" x2="590" y2="350"/>
+          <line x1="590" y1="350" x2="500" y2="290"/>
+          <line x1="500" y1="290" x2="620" y2="60"/>
+          <line x1="620" y1="60"  x2="500" y2="290"/>
+          <line x1="720" y1="130" x2="590" y2="350"/>
+          <line x1="760" y1="240" x2="500" y2="290"/>
+          <line x1="500" y1="290" x2="680" y2="310"/>
+          <line x1="650" y1="180" x2="750" y2="80"/>
+          <line x1="650" y1="180" x2="540" y2="130"/>
+          <line x1="650" y1="180" x2="780" y2="310"/>
+          <line x1="540" y1="130" x2="620" y2="60"/>
+          <line x1="540" y1="130" x2="500" y2="290"/>
+          <line x1="420" y1="200" x2="500" y2="290"/>
+          <line x1="420" y1="200" x2="540" y2="130"/>
+          <line x1="420" y1="200" x2="650" y2="180"/>
+          <line x1="750" y1="80"  x2="760" y2="240"/>
+          <line x1="780" y1="310" x2="590" y2="350"/>
+        </g>
+
+        <!-- ── 데이터 흐름 애니메이션 선 ── -->
+        <line class="data-line" x1="420" y1="200" x2="620" y2="60"  stroke="rgba(253,184,30,.35)" stroke-width="1.5" style="animation-delay:0s"/>
+        <line class="data-line" x1="720" y1="130" x2="500" y2="290" stroke="rgba(46,120,210,.4)"  stroke-width="1.5" style="animation-delay:1.2s"/>
+        <line class="data-line" x1="650" y1="180" x2="590" y2="350" stroke="rgba(11,83,96,.55)"   stroke-width="1.5" style="animation-delay:2.4s"/>
+        <line class="data-line" x1="540" y1="130" x2="760" y2="240" stroke="rgba(253,184,30,.3)"  stroke-width="1.5" style="animation-delay:0.7s"/>
+
+        <!-- ── 서킷 패턴 (우상단) ── -->
+        <g stroke="rgba(150,200,255,.1)" stroke-width="1" fill="none">
+          <rect x="690" y="20" width="90" height="55" rx="2"/>
+          <line x1="690" y1="32" x2="660" y2="32"/>
+          <line x1="690" y1="42" x2="655" y2="42"/>
+          <line x1="690" y1="52" x2="660" y2="52"/>
+          <line x1="690" y1="62" x2="655" y2="62"/>
+          <line x1="780" y1="32" x2="800" y2="32"/>
+          <line x1="780" y1="42" x2="800" y2="42"/>
+          <line x1="780" y1="52" x2="800" y2="52"/>
+          <line x1="780" y1="62" x2="800" y2="62"/>
+          <line x1="710" y1="20" x2="710" y2="5"/>
+          <line x1="725" y1="20" x2="725" y2="5"/>
+          <line x1="740" y1="20" x2="740" y2="5"/>
+          <line x1="755" y1="20" x2="755" y2="5"/>
+          <line x1="710" y1="75" x2="710" y2="90"/>
+          <line x1="725" y1="75" x2="725" y2="90"/>
+          <line x1="740" y1="75" x2="740" y2="90"/>
+          <line x1="755" y1="75" x2="755" y2="90"/>
+          <!-- inner chip -->
+          <rect x="710" y="30" width="50" height="35" rx="1"/>
+          <line x1="720" y1="30" x2="720" y2="65"/>
+          <line x1="735" y1="30" x2="735" y2="65"/>
+          <line x1="750" y1="30" x2="750" y2="65"/>
+          <line x1="710" y1="42" x2="760" y2="42"/>
+          <line x1="710" y1="53" x2="760" y2="53"/>
+        </g>
+
+        <!-- ── 허브 노드 (크고 밝은) ── -->
+        <circle cx="650" cy="180" r="10" fill="rgba(46,120,210,.25)" stroke="rgba(100,180,255,.5)" stroke-width="1.5"/>
+        <circle cx="650" cy="180" r="5"  fill="rgba(100,180,255,.6)"/>
+
+        <circle cx="500" cy="290" r="8"  fill="rgba(11,83,96,.3)"   stroke="rgba(80,200,220,.45)" stroke-width="1.5"/>
+        <circle cx="500" cy="290" r="4"  fill="rgba(80,200,220,.65)"/>
+
+        <circle cx="720" cy="130" r="8"  fill="rgba(32,84,147,.3)"  stroke="rgba(100,160,255,.45)" stroke-width="1.5"/>
+        <circle cx="720" cy="130" r="4"  fill="rgba(100,160,255,.65)"/>
+
+        <!-- ── 작은 노드들 (펄스 애니메이션) ── -->
+        <circle class="n-pulse"  cx="620" cy="60"  fill="rgba(253,184,30,.7)"  style="animation-delay:0s"/>
+        <circle class="n-pulse2" cx="760" cy="240" fill="rgba(150,200,255,.6)" style="animation-delay:.8s"/>
+        <circle class="n-pulse"  cx="680" cy="310" fill="rgba(253,184,30,.65)" style="animation-delay:1.5s"/>
+        <circle class="n-pulse2" cx="590" cy="350" fill="rgba(150,200,255,.55)" style="animation-delay:2.3s"/>
+        <circle class="n-pulse"  cx="540" cy="130" fill="rgba(253,184,30,.7)"  style="animation-delay:.5s"/>
+        <circle class="n-pulse2" cx="420" cy="200" fill="rgba(100,220,200,.6)" style="animation-delay:1.2s"/>
+        <circle class="n-pulse"  cx="750" cy="80"  fill="rgba(253,184,30,.55)" style="animation-delay:2s"/>
+        <circle class="n-pulse2" cx="780" cy="310" fill="rgba(150,200,255,.5)" style="animation-delay:.3s"/>
+
+        <!-- ── 우하단 위도·경도 그리드 (지구 네트워크 암시) ── -->
+        <g stroke="rgba(255,255,255,.05)" stroke-width="1" fill="none">
+          <ellipse cx="700" cy="380" rx="120" ry="70"/>
+          <ellipse cx="700" cy="380" rx="90"  ry="52"/>
+          <ellipse cx="700" cy="380" rx="60"  ry="35"/>
+          <line x1="580" y1="380" x2="820" y2="380"/>
+          <line x1="700" y1="310" x2="700" y2="420"/>
+          <line x1="630" y1="315" x2="770" y2="315" opacity=".7"/>
+          <line x1="610" y1="345" x2="790" y2="345" opacity=".7"/>
+          <line x1="610" y1="415" x2="790" y2="415" opacity=".7"/>
+        </g>
+
+        <!-- ── 텍스트 레이블 (작은 지명 느낌) ── -->
+        <g font-family="'Source Sans 3',sans-serif" font-size="8" fill="rgba(150,200,255,.35)" letter-spacing=".06em">
+          <text x="635" y="56">SEOUL</text>
+          <text x="726" y="126">WASHINGTON</text>
+          <text x="462" y="296">BEIJING</text>
+          <text x="656" y="306">BRUSSELS</text>
+        </g>
+      </svg>
+
+      <div class="hero-main-content">
+        <span class="hero-cat" data-i18n="hero-cat">심층 분석</span>
+        <h1 data-i18n="hero-title">반도체 공급망 재편과 한국의 전략적 선택</h1>
+        <p data-i18n="hero-desc">미·중 기술 패권 경쟁이 심화되면서 한국 반도체 산업은 전례 없는 갈림길에 서 있다. 단기 시장 이익과 장기 동맹 신뢰성 사이에서 어떤 균형을 선택할 것인가.</p>
+        <div class="meta" data-i18n="hero-byline">편집부 · 2026년 6월 14일</div>
+        <a href="#" class="btn-primary" data-i18n="hero-btn">전문 읽기</a>
+      </div>
+    </div>
+    <div class="hero-sidebar">
+      <div class="hero-sidebar-title" data-i18n="sidebar-latest">최신 기사</div>
+      <div class="hero-sidebar-item">
+        <div class="cat" data-i18n="s1-cat">첨단기술경쟁</div>
+        <h3><a href="#" data-i18n="s1-title">美 AI 수출통제 확대, 한국에 미치는 파장</a></h3>
+        <div class="date" data-i18n="s1-date">2026. 06. 13</div>
+      </div>
+      <div class="hero-sidebar-item">
+        <div class="cat" data-i18n="s2-cat">공급망</div>
+        <h3><a href="#" data-i18n="s2-title">핵심광물 공급망: 중국 의존 탈피 전략 현주소</a></h3>
+        <div class="date" data-i18n="s2-date">2026. 06. 12</div>
+      </div>
+      <div class="hero-sidebar-item">
+        <div class="cat" data-i18n="s3-cat">에너지안보</div>
+        <h3><a href="#" data-i18n="s3-title">탈러시아 LNG 전환 2년, 한국 에너지 포트폴리오 변화</a></h3>
+        <div class="date" data-i18n="s3-date">2026. 06. 11</div>
+      </div>
+      <div class="hero-sidebar-item">
+        <div class="cat" data-i18n="s4-cat">식량안보</div>
+        <h3><a href="#" data-i18n="s4-title">기후위기·전쟁으로 불안해진 글로벌 식량 공급망</a></h3>
+        <div class="date" data-i18n="s4-date">2026. 06. 10</div>
+      </div>
+      <div class="hero-sidebar-item">
+        <div class="cat" data-i18n="s5-cat">제재·수출통제</div>
+        <h3><a href="#" data-i18n="s5-title">대러·대중 경제제재, 한국 기업의 컴플라이언스 부담</a></h3>
+        <div class="date" data-i18n="s5-date">2026. 06. 09</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ TOPIC TABS -->
+<div class="topic-tabs">
+  <div class="topic-tabs-inner">
+    <span class="topic-tabs-label" data-i18n="topics-label">주제별 보기</span>
+    <a href="#" class="active" data-i18n="tab-all">전체</a>
+    <a href="#" data-i18n="tab-tech">첨단기술</a>
+    <a href="#" data-i18n="tab-semi">반도체</a>
+    <a href="#" data-i18n="tab-ai">AI</a>
+    <a href="#" data-i18n="tab-supply">공급망</a>
+    <a href="#" data-i18n="tab-energy">에너지</a>
+    <a href="#" data-i18n="tab-food">식량</a>
+    <a href="#" data-i18n="tab-mineral">핵심광물</a>
+    <a href="#" data-i18n="tab-sanctions">제재</a>
+    <a href="#" data-i18n="tab-finance">금융안보</a>
+    <a href="#" data-i18n="tab-daily" style="color:var(--wine);font-weight:700">일일동향</a>
+    <a href="#" data-i18n="tab-books">책·논문</a>
+  </div>
+</div>
+
+<!-- ⑧ MAIN CONTENT + SIDEBAR -->
+<main>
+<div class="main-content">
+
+  <!-- ◀ LEFT BLOOMBERG MARKET SIDEBAR ▶ -->
+  <aside class="market-col" aria-label="실시간 경제안보 지표">
+
+    <div class="mkt-live-hd">
+      <span class="mkt-live-dot"></span>
+      실시간 경제안보 지표
+      <span class="mkt-time" id="mkt-clock">--:--:--</span>
+    </div>
+
+    <!-- ⚡ 에너지·원자재 -->
+    <div class="mkt-panel">
+      <div class="mkt-head">⚡ 에너지·원자재</div>
+      <div class="mkt-row">
+        <div class="mkt-label">WTI 원유<span class="mkt-label-sub">$/bbl · NYMEX</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-wti">82.45</span><span class="mkt-chg up" id="c-wti">▲0.43%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">브렌트유<span class="mkt-label-sub">$/bbl · ICE</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-brent">85.20</span><span class="mkt-chg up" id="c-brent">▲0.21%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">두바이유<span class="mkt-label-sub">$/bbl · OTC</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-dubai">84.75</span><span class="mkt-chg down" id="c-dubai">▼0.29%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">천연가스<span class="mkt-label-sub">$/MMBtu · Henry Hub</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-natgas">2.85</span><span class="mkt-chg down" id="c-natgas">▼1.38%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">LNG<span class="mkt-label-sub">$/MMBtu · JKM</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-lng">12.40</span><span class="mkt-chg up" id="c-lng">▲1.22%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">열탄<span class="mkt-label-sub">$/t · Newcastle</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-coal">134.50</span><span class="mkt-chg down" id="c-coal">▼0.74%</span></div>
+      </div>
+      <div class="mkt-ts" id="ts-energy">업데이트 중...</div>
+    </div>
+
+    <!-- 💱 주요 환율 -->
+    <div class="mkt-panel">
+      <div class="mkt-head">💱 주요 환율</div>
+      <div class="mkt-row">
+        <div class="mkt-label">USD/KRW<span class="mkt-label-sub">달러·원화</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-usdkrw">1,348.5</span><span class="mkt-chg down" id="c-usdkrw">▼0.15%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">USD/JPY<span class="mkt-label-sub">달러·엔화</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-usdjpy">155.85</span><span class="mkt-chg up" id="c-usdjpy">▲0.22%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">EUR/USD<span class="mkt-label-sub">유로·달러</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-eurusd">1.0825</span><span class="mkt-chg up" id="c-eurusd">▲0.07%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">USD/CNY<span class="mkt-label-sub">달러·위안화</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-usdcny">7.248</span><span class="mkt-chg down" id="c-usdcny">▼0.17%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">USD/RUB<span class="mkt-label-sub">달러·루블화</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-usdrub">89.45</span><span class="mkt-chg up" id="c-usdrub">▲0.81%</span></div>
+      </div>
+      <div class="mkt-ts" id="ts-fx">업데이트 중...</div>
+    </div>
+
+    <!-- 🔬 반도체 가격 -->
+    <div class="mkt-panel">
+      <div class="mkt-head">🔬 반도체 가격</div>
+      <div class="mkt-row">
+        <div class="mkt-label">DRAM DDR5<span class="mkt-label-sub">$/GB · 16Gb</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-dram">$3.42</span><span class="mkt-chg up" id="c-dram">▲0.59%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">NAND Flash<span class="mkt-label-sub">$/GB · 128L</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-nand">$0.058</span><span class="mkt-chg down" id="c-nand">▼0.34%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">HBM3e<span class="mkt-label-sub">$/unit · 8Hi</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-hbm">$16.20</span><span class="mkt-chg down" id="c-hbm">▼0.49%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">실리콘 웨이퍼<span class="mkt-label-sub">$/w · 300mm</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-wafer">$125.0</span><span class="mkt-chg up" id="c-wafer">▲0.16%</span></div>
+      </div>
+      <div class="mkt-ts" id="ts-semi">업데이트 중...</div>
+    </div>
+
+    <!-- 🧪 석유화학 제품 -->
+    <div class="mkt-panel">
+      <div class="mkt-head">🧪 석유화학 제품</div>
+      <div class="mkt-row">
+        <div class="mkt-label">에틸렌<span class="mkt-label-sub">$/t · CFR 동북아</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-eth">780</span><span class="mkt-chg down" id="c-eth">▼0.64%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">프로필렌<span class="mkt-label-sub">$/t · CFR 동북아</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-prop">845</span><span class="mkt-chg up" id="c-prop">▲0.36%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">PX (파라자일렌)<span class="mkt-label-sub">$/t · FOB 한국</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-px">982</span><span class="mkt-chg up" id="c-px">▲0.82%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">벤젠<span class="mkt-label-sub">$/t · FOB 한국</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-benz">1,028</span><span class="mkt-chg down" id="c-benz">▼1.02%</span></div>
+      </div>
+      <div class="mkt-row">
+        <div class="mkt-label">MEG<span class="mkt-label-sub">$/t · CFR 중국</span></div>
+        <div class="mkt-right"><span class="mkt-val" id="v-meg">465</span><span class="mkt-chg up" id="c-meg">▲0.43%</span></div>
+      </div>
+      <div class="mkt-ts" id="ts-petro">업데이트 중...</div>
+    </div>
+
+  </aside><!-- /market-col -->
+
+  <div class="content-col">
+
+    <div class="section-head">
+      <h2 data-i18n="sec-tech">첨단기술경쟁</h2>
+      <a href="#" data-i18n="view-all">전체 보기 →</a>
+    </div>
+    <div class="articles-grid">
+
+      <div class="article-card">
+        <div class="article-card-img img-tech">
+          <img src="https://picsum.photos/seed/quantum2026/600/340" alt="양자컴퓨팅" loading="lazy" />
+          <span class="cat-badge" data-i18n="a1-cat">첨단기술경쟁</span>
+        </div>
+        <div class="article-cat" data-i18n="a1-cat">첨단기술경쟁</div>
+        <h3><a href="#" data-i18n="a1-title">양자컴퓨팅 패권 경쟁과 한국의 전략적 위치</a></h3>
+        <p data-i18n="a1-desc">미·중·EU의 양자기술 개발 경쟁이 가속화되는 가운데, 한국의 투자 규모와 기술 격차를 진단하고 국가 전략 방향을 점검한다.</p>
+        <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 08</div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-card-img img-semi">
+          <img src="https://picsum.photos/seed/semiconductor26/600/340" alt="반도체" loading="lazy" />
+          <span class="cat-badge" data-i18n="a2-cat">반도체·AI</span>
+        </div>
+        <div class="article-cat" data-i18n="a2-cat">반도체·AI</div>
+        <h3><a href="#" data-i18n="a2-title">美 IRA·CHIPS법 2년 후: 한국 반도체·배터리 산업 평가</a></h3>
+        <p data-i18n="a2-desc">미국의 인플레이션 감축법과 반도체지원법 시행 이후 한국 기업들의 대미 투자가 급증했으나, 보조금 수혜와 기술 유출 우려 사이의 딜레마는 지속되고 있다.</p>
+        <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 07</div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-card-img img-tech">
+          <img src="https://picsum.photos/seed/ainetwork2026/600/340" alt="AI 네트워크" loading="lazy" />
+          <span class="cat-badge" data-i18n="a3-cat">AI</span>
+        </div>
+        <div class="article-cat" data-i18n="a3-cat">AI</div>
+        <h3><a href="#" data-i18n="a3-title">생성형 AI와 경제안보: 기술 우위가 국력이 되는 시대</a></h3>
+        <p data-i18n="a3-desc">AI 모델 개발 역량이 군사·경제 분야 모두에서 전략적 자산으로 부상하면서 각국 정부의 AI 안보화 움직임이 본격화되고 있다.</p>
+        <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 06</div>
+      </div>
+
+    </div>
+
+    <hr class="section-divider" />
+
+    <div class="section-head">
+      <h2 data-i18n="sec-supply">공급망</h2>
+      <a href="#" data-i18n="view-all">전체 보기 →</a>
+    </div>
+    <div class="article-list">
+      <div class="article-list-item">
+        <div class="list-thumb img-chain"><img src="https://picsum.photos/seed/supplychain26/220/150" alt="공급망" loading="lazy" /></div>
+        <div>
+          <div class="article-cat" data-i18n="la1-cat">공급망</div>
+          <h3><a href="#" data-i18n="la1-title">프렌드쇼어링의 현실: 한국 기업의 공급망 재편 비용과 전략</a></h3>
+          <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 08</div>
+        </div>
+      </div>
+      <div class="article-list-item">
+        <div class="list-thumb img-mineral"><img src="https://picsum.photos/seed/mining2026/220/150" alt="핵심광물" loading="lazy" /></div>
+        <div>
+          <div class="article-cat" data-i18n="la2-cat">핵심광물</div>
+          <h3><a href="#" data-i18n="la2-title">리튬·코발트·니켈 확보 경쟁, 한국의 자원외교 현주소</a></h3>
+          <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 07</div>
+        </div>
+      </div>
+      <div class="article-list-item">
+        <div class="list-thumb img-chain"><img src="https://picsum.photos/seed/battery2026/220/150" alt="배터리" loading="lazy" /></div>
+        <div>
+          <div class="article-cat" data-i18n="la3-cat">공급망</div>
+          <h3><a href="#" data-i18n="la3-title">배터리 공급망 자립화: K-배터리 소재·부품·장비 전략</a></h3>
+          <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 06</div>
+        </div>
+      </div>
+      <div class="article-list-item">
+        <div class="list-thumb img-chain"><img src="https://picsum.photos/seed/sanctions26/220/150" alt="수출통제" loading="lazy" /></div>
+        <div>
+          <div class="article-cat" data-i18n="la4-cat">제재·수출통제</div>
+          <h3><a href="#" data-i18n="la4-title">수출통제 레짐 강화와 한국 방산·이중용도품목 수출 리스크</a></h3>
+          <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 05</div>
+        </div>
+      </div>
+      <div class="article-list-item">
+        <div class="list-thumb img-semi"><img src="https://picsum.photos/seed/hbmmemory26/220/150" alt="HBM 메모리" loading="lazy" /></div>
+        <div>
+          <div class="article-cat" data-i18n="la5-cat">반도체·AI</div>
+          <h3><a href="#" data-i18n="la5-title">HBM 시장 독주와 경쟁심화: 차세대 메모리 경제안보 이슈</a></h3>
+          <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 04</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-col">
+    <div class="sidebar-widget newsletter-widget">
+      <div class="widget-head" data-i18n="newsletter-head">뉴스레터 구독</div>
+      <div class="widget-body">
+        <p data-i18n="newsletter-text">매주 엄선된 경제안보 심층 분석을 이메일로 받아보세요.</p>
+        <input type="email" id="newsletter-email" placeholder="이메일 주소 입력" />
+        <button class="btn-state" data-i18n="newsletter-btn">무료 구독 신청</button>
+      </div>
+    </div>
+    <div class="sidebar-widget ad-widget">
+      <div class="widget-head">Advertisement</div>
+      <div class="widget-body">300×250<br>Google AdSense<br>삽입 위치</div>
+    </div>
+    <div class="sidebar-widget">
+      <div class="widget-head" data-i18n="keywords-head">주요 키워드</div>
+      <div class="widget-body">
+        <div class="tag-cloud">
+          <a href="#" class="tag" data-i18n="tag1">반도체</a>
+          <a href="#" class="tag" data-i18n="tag2">AI</a>
+          <a href="#" class="tag" data-i18n="tag3">공급망</a>
+          <a href="#" class="tag" data-i18n="tag4">에너지안보</a>
+          <a href="#" class="tag" data-i18n="tag5">식량안보</a>
+          <a href="#" class="tag" data-i18n="tag6">핵심광물</a>
+          <a href="#" class="tag" data-i18n="tag7">수출통제</a>
+          <a href="#" class="tag" data-i18n="tag8">경제제재</a>
+          <a href="#" class="tag" data-i18n="tag9">CHIPS법</a>
+          <a href="#" class="tag" data-i18n="tag10">양자기술</a>
+          <a href="#" class="tag" data-i18n="tag11">배터리</a>
+          <a href="#" class="tag" data-i18n="tag12">리튬</a>
+          <a href="#" class="tag" data-i18n="tag13">LNG</a>
+          <a href="#" class="tag" data-i18n="tag14">미중경쟁</a>
+          <a href="#" class="tag" data-i18n="tag15">프렌드쇼어링</a>
+          <a href="#" class="tag" data-i18n="tag16">기술패권</a>
+          <a href="#" class="tag" data-i18n="tag17">데이터주권</a>
+          <a href="#" class="tag" data-i18n="tag18">사이버안보</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+</main>
+
+<!-- ⑨ DARK BAND -->
+<section class="news-band" style="position:relative;overflow:hidden;">
+  <!-- 에너지·공급망 배경 비주얼 -->
+  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.55" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- 파이프라인/공급망 흐름 -->
+    <g stroke="rgba(253,184,30,.12)" stroke-width="2" fill="none">
+      <path d="M0,80 Q120,60 200,100 T400,90 T600,110 T800,85 T1000,100 T1200,80"/>
+      <path d="M0,160 Q150,140 280,175 T500,160 T700,178 T900,155 T1100,170 T1200,160"/>
+      <path d="M0,240 Q100,220 220,250 T440,235 T640,255 T840,238 T1040,252 T1200,240"/>
+    </g>
+    <!-- 에너지 노드 -->
+    <g fill="rgba(253,184,30,.2)" stroke="rgba(253,184,30,.4)" stroke-width="1">
+      <circle cx="200" cy="100" r="5"/><circle cx="400" cy="90" r="4"/><circle cx="600" cy="110" r="6"/>
+      <circle cx="800" cy="85"  r="4"/><circle cx="1000" cy="100" r="5"/>
+      <circle cx="280" cy="175" r="4"/><circle cx="500" cy="160" r="5"/><circle cx="700" cy="178" r="4"/>
+      <circle cx="900" cy="155" r="6"/><circle cx="1100" cy="170" r="4"/>
+    </g>
+    <!-- 배경 그리드 -->
+    <g stroke="rgba(255,255,255,.03)" stroke-width="1">
+      <line x1="0" y1="40"  x2="1200" y2="40"/>
+      <line x1="0" y1="120" x2="1200" y2="120"/>
+      <line x1="0" y1="200" x2="1200" y2="200"/>
+      <line x1="0" y1="280" x2="1200" y2="280"/>
+      <line x1="150"  y1="0" x2="150"  y2="320"/>
+      <line x1="350"  y1="0" x2="350"  y2="320"/>
+      <line x1="550"  y1="0" x2="550"  y2="320"/>
+      <line x1="750"  y1="0" x2="750"  y2="320"/>
+      <line x1="950"  y1="0" x2="950"  y2="320"/>
+      <line x1="1100" y1="0" x2="1100" y2="320"/>
+    </g>
+  </svg>
+  <div class="news-band-inner" style="position:relative;z-index:1;">
+    <div class="section-head">
+      <h2 data-i18n="sec-dark">에너지안보 · 식량안보</h2>
+      <a href="#" data-i18n="view-all">전체 보기 →</a>
+    </div>
+    <div class="articles-grid">
+      <div class="article-card">
+        <div class="article-card-img img-energy">
+          <img src="https://picsum.photos/seed/hydrogen2026/600/340" alt="수소 에너지" loading="lazy" />
+          <span class="cat-badge" data-i18n="da1-cat">에너지안보</span>
+        </div>
+        <div class="article-cat" data-i18n="da1-cat">에너지안보</div>
+        <h3><a href="#" data-i18n="da1-title">수소경제와 에너지안보: 한국 그린수소 전략의 과제</a></h3>
+        <p data-i18n="da1-desc">탄소중립과 에너지 자립이라는 두 목표를 동시에 추구하는 한국의 수소 전략, 현실적 가능성과 한계를 점검한다.</p>
+        <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 07</div>
+      </div>
+      <div class="article-card">
+        <div class="article-card-img img-energy">
+          <img src="https://picsum.photos/seed/nuclear2026/600/340" alt="원자력 발전" loading="lazy" />
+          <span class="cat-badge" data-i18n="da2-cat">에너지안보</span>
+        </div>
+        <div class="article-cat" data-i18n="da2-cat">에너지안보</div>
+        <h3><a href="#" data-i18n="da2-title">원전 르네상스와 한국 원전 수출: 경제안보 자산으로서의 핵에너지</a></h3>
+        <p data-i18n="da2-desc">글로벌 원전 재평가 흐름 속에서 한국의 원전 기술력이 새로운 경제안보 자산으로 주목받고 있다.</p>
+        <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 05</div>
+      </div>
+      <div class="article-card">
+        <div class="article-card-img img-food">
+          <img src="https://picsum.photos/seed/foodsecurity26/600/340" alt="식량 안보" loading="lazy" />
+          <span class="cat-badge" data-i18n="da3-cat">식량안보</span>
+        </div>
+        <div class="article-cat" data-i18n="da3-cat">식량안보</div>
+        <h3><a href="#" data-i18n="da3-title">수입 의존도 75%, 한국 식량안보의 구조적 취약성 진단</a></h3>
+        <p data-i18n="da3-desc">기후변화·전쟁·수출규제로 글로벌 식량 공급이 불안정해지는 가운데, 한국의 식량자급률 제고와 해외 농업 개발 전략을 점검한다.</p>
+        <div class="byline"><span data-i18n="by-editorial">편집부</span> · 2026. 06. 03</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ 책·논문 리뷰 섹션 -->
+<section class="book-review-section" id="books">
+  <div class="book-review-inner">
+    <div class="section-head">
+      <h2 style="font-family:var(--font-ui);font-size:.85rem;font-weight:700;color:var(--navy);letter-spacing:.12em;text-transform:uppercase">책·논문 리뷰</h2>
+      <a href="#" style="font-size:13px;color:var(--link)">전체 보기 →</a>
+    </div>
+    <div class="book-grid">
+
+      <div class="book-card">
+        <div class="book-cover bc-navy">
+          <span>The Chip War</span>
+        </div>
+        <div class="book-card-body">
+          <div class="book-type">📘 단행본 리뷰</div>
+          <h3><a href="#">《칩 워》— 반도체 패권 전쟁의 전모</a></h3>
+          <div class="book-author">Chris Miller 저 / 2022</div>
+          <p class="book-snippet">현대 반도체 산업의 탄생부터 미·중 기술 전쟁의 최전선까지, 칩이 어떻게 21세기 지정학의 핵심 자산이 되었는지를 추적한 역작. 경제안보 연구자 필독서.</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover bc-wine">
+          <span>Economic<br>Statecraft</span>
+        </div>
+        <div class="book-card-body">
+          <div class="book-type">📗 논문 리뷰</div>
+          <h3><a href="#">경제 강압(Economic Coercion)의 이론과 실제</a></h3>
+          <div class="book-author">Blackwill & Harris / Foreign Affairs 2016</div>
+          <p class="book-snippet">경제적 수단을 지정학적 목적에 활용하는 '지경학(Geoeconomics)'의 개념을 체계화한 논문. 수출통제·제재·투자심사 정책의 이론적 토대.</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover bc-teal">
+          <span>The New<br>Supply Chain</span>
+        </div>
+        <div class="book-card-body">
+          <div class="book-type">📘 단행본 리뷰</div>
+          <h3><a href="#">《공급망의 세계》— 글로벌 연결의 재편</a></h3>
+          <div class="book-author">Parag Khanna 저 / 2021</div>
+          <p class="book-snippet">팬데믹 이후 글로벌 공급망 재편의 방향성을 조망한다. 프렌드쇼어링·리쇼어링·니어쇼어링의 전략적 함의와 각국의 대응을 분석.</p>
+        </div>
+      </div>
+
+      <div class="book-card">
+        <div class="book-cover bc-dark">
+          <span>AI &amp;<br>National Power</span>
+        </div>
+        <div class="book-card-body">
+          <div class="book-type">📄 보고서 리뷰</div>
+          <h3><a href="#">AI 국가전략 비교 분석: 미·중·EU·한국</a></h3>
+          <div class="book-author">CSIS 보고서 / 2024</div>
+          <p class="book-snippet">주요국의 AI 국가전략 문서를 비교 분석하고, AI 거버넌스·안보화·수출통제 정책의 수렴과 분기를 정리한 전략 보고서.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ⑪ 언론사 스크롤 링크 -->
+<div class="ticker-section media-ticker" aria-label="주요 언론사 링크">
+  <div class="ticker-badge">주요 언론</div>
+  <div class="ticker-viewport">
+    <div class="ticker-track">
+      <!-- 1회 -->
+      <a href="https://www.economist.com" target="_blank" rel="noopener noreferrer">The Economist</a><span class="ticker-dot">●</span>
+      <a href="https://www.ft.com" target="_blank" rel="noopener noreferrer">Financial Times</a><span class="ticker-dot">●</span>
+      <a href="https://www.nytimes.com" target="_blank" rel="noopener noreferrer">The New York Times</a><span class="ticker-dot">●</span>
+      <a href="https://www.foreignaffairs.com" target="_blank" rel="noopener noreferrer">Foreign Affairs</a><span class="ticker-dot">●</span>
+      <a href="https://foreignpolicy.com" target="_blank" rel="noopener noreferrer">Foreign Policy</a><span class="ticker-dot">●</span>
+      <a href="https://thediplomat.com" target="_blank" rel="noopener noreferrer">The Diplomat</a><span class="ticker-dot">●</span>
+      <a href="https://www.lemonde.fr" target="_blank" rel="noopener noreferrer">Le Monde</a><span class="ticker-dot">●</span>
+      <a href="https://www.rt.com" target="_blank" rel="noopener noreferrer">RT</a><span class="ticker-dot">●</span>
+      <a href="https://www.scmp.com" target="_blank" rel="noopener noreferrer">South China Morning Post</a><span class="ticker-dot">●</span>
+      <a href="https://asia.nikkei.com" target="_blank" rel="noopener noreferrer">Nikkei Asia</a><span class="ticker-dot">●</span>
+      <a href="http://en.people.cn" target="_blank" rel="noopener noreferrer">People's Daily</a><span class="ticker-dot">●</span>
+      <!-- 루프를 위한 2회 복사 -->
+      <a href="https://www.economist.com" target="_blank" rel="noopener noreferrer">The Economist</a><span class="ticker-dot">●</span>
+      <a href="https://www.ft.com" target="_blank" rel="noopener noreferrer">Financial Times</a><span class="ticker-dot">●</span>
+      <a href="https://www.nytimes.com" target="_blank" rel="noopener noreferrer">The New York Times</a><span class="ticker-dot">●</span>
+      <a href="https://www.foreignaffairs.com" target="_blank" rel="noopener noreferrer">Foreign Affairs</a><span class="ticker-dot">●</span>
+      <a href="https://foreignpolicy.com" target="_blank" rel="noopener noreferrer">Foreign Policy</a><span class="ticker-dot">●</span>
+      <a href="https://thediplomat.com" target="_blank" rel="noopener noreferrer">The Diplomat</a><span class="ticker-dot">●</span>
+      <a href="https://www.lemonde.fr" target="_blank" rel="noopener noreferrer">Le Monde</a><span class="ticker-dot">●</span>
+      <a href="https://www.rt.com" target="_blank" rel="noopener noreferrer">RT</a><span class="ticker-dot">●</span>
+      <a href="https://www.scmp.com" target="_blank" rel="noopener noreferrer">South China Morning Post</a><span class="ticker-dot">●</span>
+      <a href="https://asia.nikkei.com" target="_blank" rel="noopener noreferrer">Nikkei Asia</a><span class="ticker-dot">●</span>
+      <a href="http://en.people.cn" target="_blank" rel="noopener noreferrer">People's Daily</a><span class="ticker-dot">●</span>
+    </div>
+  </div>
+</div>
+
+<!-- ⑪ 주요국 외교부 사이트 스크롤 링크 -->
+<div class="ticker-section gov-ticker" aria-label="주요국 정부 사이트 링크">
+  <div class="ticker-badge">주요 정부</div>
+  <div class="ticker-viewport">
+    <div class="ticker-track slow">
+      <!-- 1회 -->
+      <a href="https://www.mofa.go.kr" target="_blank" rel="noopener noreferrer">🇰🇷 한국 외교부 (MOFA)</a><span class="ticker-dot">●</span>
+      <a href="https://www.state.gov" target="_blank" rel="noopener noreferrer">🇺🇸 U.S. Dept. of State</a><span class="ticker-dot">●</span>
+      <a href="https://www.mfa.gov.cn/eng/" target="_blank" rel="noopener noreferrer">🇨🇳 中国外交部 (MFA China)</a><span class="ticker-dot">●</span>
+      <a href="https://www.mid.ru/en/main_en" target="_blank" rel="noopener noreferrer">🇷🇺 МИД России (MFA Russia)</a><span class="ticker-dot">●</span>
+      <a href="https://www.mofa.go.jp/index.html" target="_blank" rel="noopener noreferrer">🇯🇵 外務省 (MOFA Japan)</a><span class="ticker-dot">●</span>
+      <a href="https://www.eeas.europa.eu" target="_blank" rel="noopener noreferrer">🇪🇺 EU External Action Service</a><span class="ticker-dot">●</span>
+      <a href="https://www.un.org/en/" target="_blank" rel="noopener noreferrer">🌐 United Nations</a><span class="ticker-dot">●</span>
+      <a href="https://www.wto.org" target="_blank" rel="noopener noreferrer">🌐 WTO</a><span class="ticker-dot">●</span>
+      <a href="https://home.treasury.gov" target="_blank" rel="noopener noreferrer">🇺🇸 U.S. Treasury (OFAC)</a><span class="ticker-dot">●</span>
+      <a href="https://www.iea.org" target="_blank" rel="noopener noreferrer">🌐 IEA 국제에너지기구</a><span class="ticker-dot">●</span>
+      <!-- 루프를 위한 2회 복사 -->
+      <a href="https://www.mofa.go.kr" target="_blank" rel="noopener noreferrer">🇰🇷 한국 외교부 (MOFA)</a><span class="ticker-dot">●</span>
+      <a href="https://www.state.gov" target="_blank" rel="noopener noreferrer">🇺🇸 U.S. Dept. of State</a><span class="ticker-dot">●</span>
+      <a href="https://www.mfa.gov.cn/eng/" target="_blank" rel="noopener noreferrer">🇨🇳 中国外交部 (MFA China)</a><span class="ticker-dot">●</span>
+      <a href="https://www.mid.ru/en/main_en" target="_blank" rel="noopener noreferrer">🇷🇺 МИД России (MFA Russia)</a><span class="ticker-dot">●</span>
+      <a href="https://www.mofa.go.jp/index.html" target="_blank" rel="noopener noreferrer">🇯🇵 外務省 (MOFA Japan)</a><span class="ticker-dot">●</span>
+      <a href="https://www.eeas.europa.eu" target="_blank" rel="noopener noreferrer">🇪🇺 EU External Action Service</a><span class="ticker-dot">●</span>
+      <a href="https://www.un.org/en/" target="_blank" rel="noopener noreferrer">🌐 United Nations</a><span class="ticker-dot">●</span>
+      <a href="https://www.wto.org" target="_blank" rel="noopener noreferrer">🌐 WTO</a><span class="ticker-dot">●</span>
+      <a href="https://home.treasury.gov" target="_blank" rel="noopener noreferrer">🇺🇸 U.S. Treasury (OFAC)</a><span class="ticker-dot">●</span>
+      <a href="https://www.iea.org" target="_blank" rel="noopener noreferrer">🌐 IEA 국제에너지기구</a><span class="ticker-dot">●</span>
+    </div>
+  </div>
+</div>
+
+<!-- ⑫ FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand-row">
+      <div class="footer-seal" aria-label="ESI 로고">
+        <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+          <rect width="50" height="50" fill="#E3120B"/>
+          <text x="25" y="34"
+            text-anchor="middle"
+            font-family="'Playfair Display', Georgia, serif"
+            font-weight="700"
+            font-size="19"
+            letter-spacing="3"
+            fill="white">ESI</text>
+        </svg>
+      </div>
+      <div class="footer-brand-text">
+        <div class="name" data-i18n="site-name">경제안보 인사이트</div>
+        <div class="sub" data-i18n="site-sub">첨단기술 · 반도체 · AI · 공급망 · 에너지 · 식량안보</div>
+      </div>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-col footer-col-about">
+        <h4 data-i18n="footer-about-head">소개</h4>
+        <p data-i18n="footer-about-text">경제안보 인사이트는 첨단기술경쟁, 반도체·AI, 공급망, 에너지안보, 식량안보, 핵심광물, 경제제재 등 경제안보 전 분야를 심층 분석하는 독립 전문 미디어입니다.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-cat-head">카테고리</h4>
+        <a href="#" data-i18n="footer-cat1">첨단기술경쟁</a>
+        <a href="#" data-i18n="footer-cat2">반도체·AI</a>
+        <a href="#" data-i18n="footer-cat3">공급망</a>
+        <a href="#" data-i18n="footer-cat4">에너지안보</a>
+        <a href="#" data-i18n="footer-cat5">식량안보</a>
+        <a href="#" data-i18n="footer-cat6">핵심광물</a>
+        <a href="#" data-i18n="footer-cat7">제재·수출통제</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-media-head">미디어</h4>
+        <a href="#" data-i18n="footer-med1">기고 안내</a>
+        <a href="#" data-i18n="footer-med2">뉴스레터</a>
+        <a href="#" data-i18n="footer-med3">광고 문의</a>
+        <a href="#" data-i18n="footer-med4">아카이브</a>
+        <a href="#" data-i18n="footer-med5">RSS 피드</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-info-head">정보</h4>
+        <a href="#" data-i18n="footer-inf1">소개 페이지</a>
+        <a href="#" data-i18n="footer-inf2">편집 원칙</a>
+        <a href="#" data-i18n="footer-inf3">개인정보처리방침</a>
+        <a href="#" data-i18n="footer-inf4">이용약관</a>
+        <a href="#" data-i18n="footer-inf5">문의하기</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footer-copy">© 2026 경제안보 인사이트. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#" data-i18n="footer-priv">개인정보처리방침</a>
+        <a href="#" data-i18n="footer-terms">이용약관</a>
+        <a href="#" data-i18n="footer-access">접근성</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════
+     다국어 번역 데이터 + 언어 전환 스크립트
+═══════════════════════════════════════════════ -->
+<script>
+const T = {
+  ko: {
+    'site-desc':'대한민국 경제안보 전문 미디어','nav-newsletter':'뉴스레터 구독','nav-login':'로그인',
+    'site-name':'경제안보 인사이트','site-sub':'첨단기술 · 반도체 · AI · 공급망 · 에너지 · 식량안보',
+    'nav-home':'홈','nav-tech':'첨단기술경쟁','nav-semi':'반도체·AI','nav-supply':'공급망',
+    'nav-energy':'에너지안보','nav-food':'식량안보','nav-mineral':'핵심광물','nav-sanctions':'제재·수출통제','nav-column':'칼럼·기고',
+    'alert-label':'속보','alert-text':'미 상무부, 첨단 AI 반도체 추가 수출통제 발표 — 한국 기업 영향 분석','read-more':'전문 읽기 →',
+    'topics-label':'주제별 보기','tab-all':'전체','tab-tech':'첨단기술','tab-semi':'반도체','tab-ai':'AI','tab-supply':'공급망','tab-energy':'에너지','tab-food':'식량','tab-mineral':'핵심광물','tab-sanctions':'제재','tab-finance':'금융안보',
+    'sidebar-latest':'최신 기사',
+    's1-cat':'첨단기술경쟁','s1-title':'美 AI 수출통제 확대, 한국에 미치는 파장','s1-date':'2026. 06. 13',
+    's2-cat':'공급망','s2-title':'핵심광물 공급망: 중국 의존 탈피 전략 현주소','s2-date':'2026. 06. 12',
+    's3-cat':'에너지안보','s3-title':'탈러시아 LNG 전환 2년, 한국 에너지 포트폴리오 변화','s3-date':'2026. 06. 11',
+    's4-cat':'식량안보','s4-title':'기후위기·전쟁으로 불안해진 글로벌 식량 공급망','s4-date':'2026. 06. 10',
+    's5-cat':'제재·수출통제','s5-title':'대러·대중 경제제재, 한국 기업의 컴플라이언스 부담','s5-date':'2026. 06. 09',
+    'hero-cat':'심층 분석','hero-title':'반도체 공급망 재편과 한국의 전략적 선택','hero-desc':'미·중 기술 패권 경쟁이 심화되면서 한국 반도체 산업은 전례 없는 갈림길에 서 있다. 단기 시장 이익과 장기 동맹 신뢰성 사이에서 어떤 균형을 선택할 것인가.','hero-btn':'전문 읽기','hero-byline':'편집부 · 2026년 6월 14일',
+    'sec-tech':'첨단기술경쟁','sec-supply':'공급망','sec-dark':'에너지안보 · 식량안보','view-all':'전체 보기 →',
+    'a1-cat':'첨단기술경쟁','a1-title':'양자컴퓨팅 패권 경쟁과 한국의 전략적 위치','a1-desc':'미·중·EU의 양자기술 개발 경쟁이 가속화되는 가운데, 한국의 투자 규모와 기술 격차를 진단하고 국가 전략 방향을 점검한다.',
+    'a2-cat':'반도체·AI','a2-title':'美 IRA·CHIPS법 2년 후: 한국 반도체·배터리 산업 평가','a2-desc':'미국의 인플레이션 감축법과 반도체지원법 시행 이후 한국 기업들의 대미 투자가 급증했으나, 보조금 수혜와 기술 유출 우려 사이의 딜레마는 지속되고 있다.',
+    'a3-cat':'AI','a3-title':'생성형 AI와 경제안보: 기술 우위가 국력이 되는 시대','a3-desc':'AI 모델 개발 역량이 군사·경제 분야 모두에서 전략적 자산으로 부상하면서 각국 정부의 AI 안보화 움직임이 본격화되고 있다.',
+    'la1-cat':'공급망','la1-title':'프렌드쇼어링의 현실: 한국 기업의 공급망 재편 비용과 전략',
+    'la2-cat':'핵심광물','la2-title':'리튬·코발트·니켈 확보 경쟁, 한국의 자원외교 현주소',
+    'la3-cat':'공급망','la3-title':'배터리 공급망 자립화: K-배터리 소재·부품·장비 전략',
+    'la4-cat':'제재·수출통제','la4-title':'수출통제 레짐 강화와 한국 방산·이중용도품목 수출 리스크',
+    'la5-cat':'반도체·AI','la5-title':'HBM 시장 독주와 경쟁심화: 차세대 메모리 경제안보 이슈',
+    'da1-cat':'에너지안보','da1-title':'수소경제와 에너지안보: 한국 그린수소 전략의 과제','da1-desc':'탄소중립과 에너지 자립이라는 두 목표를 동시에 추구하는 한국의 수소 전략, 현실적 가능성과 한계를 점검한다.',
+    'da2-cat':'에너지안보','da2-title':'원전 르네상스와 한국 원전 수출: 경제안보 자산으로서의 핵에너지','da2-desc':'글로벌 원전 재평가 흐름 속에서 한국의 원전 기술력이 새로운 경제안보 자산으로 주목받고 있다.',
+    'da3-cat':'식량안보','da3-title':'수입 의존도 75%, 한국 식량안보의 구조적 취약성 진단','da3-desc':'기후변화·전쟁·수출규제로 글로벌 식량 공급이 불안정해지는 가운데, 한국의 식량자급률 제고와 해외 농업 개발 전략을 점검한다.',
+    'newsletter-head':'뉴스레터 구독','newsletter-text':'매주 엄선된 경제안보 심층 분석을 이메일로 받아보세요.','newsletter-placeholder':'이메일 주소 입력','newsletter-btn':'무료 구독 신청',
+    'keywords-head':'주요 키워드',
+    'footer-about-head':'소개','footer-about-text':'경제안보 인사이트는 첨단기술경쟁, 반도체·AI, 공급망, 에너지안보, 식량안보, 핵심광물, 경제제재 등 경제안보 전 분야를 심층 분석하는 독립 전문 미디어입니다.',
+    'footer-cat-head':'카테고리','footer-media-head':'미디어','footer-info-head':'정보',
+    'footer-cat1':'첨단기술경쟁','footer-cat2':'반도체·AI','footer-cat3':'공급망','footer-cat4':'에너지안보','footer-cat5':'식량안보','footer-cat6':'핵심광물','footer-cat7':'제재·수출통제',
+    'footer-med1':'기고 안내','footer-med2':'뉴스레터','footer-med3':'광고 문의','footer-med4':'아카이브','footer-med5':'RSS 피드',
+    'footer-inf1':'소개 페이지','footer-inf2':'편집 원칙','footer-inf3':'개인정보처리방침','footer-inf4':'이용약관','footer-inf5':'문의하기',
+    'footer-copy':'© 2026 경제안보 인사이트. All rights reserved.','footer-priv':'개인정보처리방침','footer-terms':'이용약관','footer-access':'접근성',
+    'tag1':'반도체','tag2':'AI','tag3':'공급망','tag4':'에너지안보','tag5':'식량안보','tag6':'핵심광물','tag7':'수출통제','tag8':'경제제재','tag9':'CHIPS법','tag10':'양자기술','tag11':'배터리','tag12':'리튬','tag13':'LNG','tag14':'미중경쟁','tag15':'프렌드쇼어링','tag16':'기술패권','tag17':'데이터주권','tag18':'사이버안보',
+    'by-editorial':'편집부','search-placeholder':'기사 검색...'
+  },
+  en: {
+    'site-desc':"Korea's Premier Economic Security Media",'nav-newsletter':'Newsletter','nav-login':'Login',
+    'site-name':'Economic Security Insight','site-sub':'Advanced Tech · Semiconductors · AI · Supply Chains · Energy · Food Security',
+    'nav-home':'Home','nav-tech':'Tech Competition','nav-semi':'Semiconductors·AI','nav-supply':'Supply Chains','nav-energy':'Energy Security','nav-food':'Food Security','nav-mineral':'Critical Minerals','nav-sanctions':'Sanctions·Export Controls','nav-column':'Columns',
+    'alert-label':'BREAKING','alert-text':'U.S. Commerce Dept. announces additional export controls on advanced AI chips — Impact analysis for Korean firms','read-more':'Read More →',
+    'topics-label':'Browse by Topic','tab-all':'All','tab-tech':'Advanced Tech','tab-semi':'Semiconductors','tab-ai':'AI','tab-supply':'Supply Chain','tab-energy':'Energy','tab-food':'Food','tab-mineral':'Critical Minerals','tab-sanctions':'Sanctions','tab-finance':'Financial Security',
+    'sidebar-latest':'Latest Articles',
+    's1-cat':'Tech Competition','s1-title':'U.S. AI Export Control Expansion and Its Impact on Korea','s1-date':'Jun 13, 2026',
+    's2-cat':'Supply Chain','s2-title':'Critical Mineral Supply Chains: Reducing China Dependence','s2-date':'Jun 12, 2026',
+    's3-cat':'Energy Security','s3-title':"Two Years Post-Russia LNG Transition: Korea's Energy Portfolio Shift",'s3-date':'Jun 11, 2026',
+    's4-cat':'Food Security','s4-title':'Global Food Supply Chains Destabilized by Climate Crisis and War','s4-date':'Jun 10, 2026',
+    's5-cat':'Sanctions','s5-title':'Russia and China Sanctions: Compliance Burdens for Korean Firms','s5-date':'Jun 9, 2026',
+    'hero-cat':'IN-DEPTH ANALYSIS','hero-title':"Semiconductor Supply Chain Restructuring and Korea's Strategic Choices",'hero-desc':"As US-China technology competition intensifies, Korea's semiconductor industry faces an unprecedented crossroads. How to balance short-term market gains against long-term alliance credibility.",'hero-btn':'Read Full Article','hero-byline':'Editorial Team · June 14, 2026',
+    'sec-tech':'Tech Competition','sec-supply':'Supply Chains','sec-dark':'Energy Security · Food Security','view-all':'View All →',
+    'a1-cat':'Tech Competition','a1-title':"Quantum Computing Race and Korea's Strategic Position",'a1-desc':"As the US, China, and EU accelerate quantum technology development, this analysis diagnoses Korea's investment scale, technology gap, and national strategy.",
+    'a2-cat':'Semiconductors·AI','a2-title':'Two Years After IRA & CHIPS Act: Assessing Korean Semiconductor and Battery Industries','a2-desc':"Korean firms' US investments have surged, but the dilemma between subsidy benefits and technology leakage concerns persists.",
+    'a3-cat':'AI','a3-title':'Generative AI and Economic Security: When Tech Superiority Becomes National Power','a3-desc':'As AI capabilities become strategic assets across military and economic domains, governments worldwide are accelerating AI securitization efforts.',
+    'la1-cat':'Supply Chain','la1-title':'The Reality of Friendshoring: Costs and Strategies for Korean Supply Chain Restructuring',
+    'la2-cat':'Critical Minerals','la2-title':"Race for Lithium, Cobalt & Nickel: Korea's Resource Diplomacy Today",
+    'la3-cat':'Supply Chain','la3-title':"Battery Supply Chain Independence: Korea's Materials, Parts and Equipment Strategy",
+    'la4-cat':'Sanctions','la4-title':"Tightening Export Controls and Risks for Korea's Defense and Dual-Use Exports",
+    'la5-cat':'Semiconductors·AI','la5-title':'HBM Market Dominance Under Threat: Next-Gen Memory as an Economic Security Issue',
+    'da1-cat':'Energy Security','da1-title':"Hydrogen Economy and Energy Security: Challenges for Korea's Green Hydrogen Strategy",'da1-desc':'Korea simultaneously pursues carbon neutrality and energy independence. We assess its realistic possibilities and limitations.',
+    'da2-cat':'Energy Security','da2-title':'Nuclear Renaissance and Korean Nuclear Exports: Nuclear Energy as an Economic Security Asset','da2-desc':"Amid global nuclear reassessment, Korea's nuclear technology is emerging as a new economic security asset.",
+    'da3-cat':'Food Security','da3-title':"75% Import Dependence: Diagnosing Korea's Structural Food Security Vulnerabilities",'da3-desc':'As global food supply grows unstable due to climate change and war, we examine strategies for Korea to elevate food self-sufficiency.',
+    'newsletter-head':'Newsletter','newsletter-text':'Receive weekly curated economic security analysis by email.','newsletter-placeholder':'Enter your email address','newsletter-btn':'Subscribe Free',
+    'keywords-head':'Key Topics',
+    'footer-about-head':'About','footer-about-text':'Economic Security Insight is an independent specialized media covering all areas of economic security including tech competition, semiconductors·AI, supply chains, energy security, food security, critical minerals, and economic sanctions.',
+    'footer-cat-head':'Categories','footer-media-head':'Media','footer-info-head':'Information',
+    'footer-cat1':'Tech Competition','footer-cat2':'Semiconductors·AI','footer-cat3':'Supply Chains','footer-cat4':'Energy Security','footer-cat5':'Food Security','footer-cat6':'Critical Minerals','footer-cat7':'Sanctions',
+    'footer-med1':'Contribute','footer-med2':'Newsletter','footer-med3':'Advertise','footer-med4':'Archive','footer-med5':'RSS Feed',
+    'footer-inf1':'About Us','footer-inf2':'Editorial Standards','footer-inf3':'Privacy Policy','footer-inf4':'Terms of Use','footer-inf5':'Contact',
+    'footer-copy':'© 2026 Economic Security Insight. All rights reserved.','footer-priv':'Privacy Policy','footer-terms':'Terms of Use','footer-access':'Accessibility',
+    'tag1':'Semiconductors','tag2':'AI','tag3':'Supply Chain','tag4':'Energy Security','tag5':'Food Security','tag6':'Critical Minerals','tag7':'Export Controls','tag8':'Economic Sanctions','tag9':'CHIPS Act','tag10':'Quantum Tech','tag11':'Batteries','tag12':'Lithium','tag13':'LNG','tag14':'US-China Competition','tag15':'Friendshoring','tag16':'Tech Hegemony','tag17':'Data Sovereignty','tag18':'Cybersecurity',
+    'by-editorial':'Editorial Team','search-placeholder':'Search articles...'
+  },
+  zh: {
+    'site-desc':'韩国经济安全专业媒体','nav-newsletter':'订阅简报','nav-login':'登录',
+    'site-name':'经济安全洞察','site-sub':'先进技术 · 半导体 · AI · 供应链 · 能源 · 粮食安全',
+    'nav-home':'首页','nav-tech':'技术竞争','nav-semi':'半导体·AI','nav-supply':'供应链','nav-energy':'能源安全','nav-food':'粮食安全','nav-mineral':'关键矿物','nav-sanctions':'制裁·出口管制','nav-column':'评论·投稿',
+    'alert-label':'快讯','alert-text':'美国商务部宣布对先进AI芯片实施额外出口管制——分析对韩国企业的影响','read-more':'阅读全文 →',
+    'topics-label':'按主题浏览','tab-all':'全部','tab-tech':'先进技术','tab-semi':'半导体','tab-ai':'AI','tab-supply':'供应链','tab-energy':'能源','tab-food':'粮食','tab-mineral':'关键矿物','tab-sanctions':'制裁','tab-finance':'金融安全',
+    'sidebar-latest':'最新文章',
+    's1-cat':'技术竞争','s1-title':'美国AI出口管制扩大对韩国的影响','s1-date':'2026年6月13日',
+    's2-cat':'供应链','s2-title':'关键矿物供应链：减少对中国依赖的现状','s2-date':'2026年6月12日',
+    's3-cat':'能源安全','s3-title':'脱俄LNG转型两年：韩国能源结构变化','s3-date':'2026年6月11日',
+    's4-cat':'粮食安全','s4-title':'气候危机与战争动摇全球粮食供应链','s4-date':'2026年6月10日',
+    's5-cat':'制裁','s5-title':'对俄对华经济制裁加大韩国企业合规负担','s5-date':'2026年6月9日',
+    'hero-cat':'深度分析','hero-title':'半导体供应链重构与韩国的战略选择','hero-desc':'随着中美技术霸权竞争加剧，韩国半导体产业正处于前所未有的十字路口。如何在短期市场利益与长期同盟公信力之间寻求平衡？','hero-btn':'阅读全文','hero-byline':'编辑部 · 2026年6月14日',
+    'sec-tech':'技术竞争','sec-supply':'供应链','sec-dark':'能源安全 · 粮食安全','view-all':'查看全部 →',
+    'a1-cat':'技术竞争','a1-title':'量子计算霸权竞争与韩国的战略地位','a1-desc':'中美欧量子技术竞争加速，本文诊断韩国投资规模与技术差距，审视国家战略方向。',
+    'a2-cat':'半导体·AI','a2-title':'IRA与CHIPS法两年后：韩国半导体及电池产业评估','a2-desc':'美国法律实施后韩国对美投资激增，但补贴受益与技术泄漏之间的困境仍然持续。',
+    'a3-cat':'AI','a3-title':'生成式AI与经济安全：技术优势成为国家实力的时代','a3-desc':'AI能力在军事和经济领域均成为战略资产，各国政府的AI安全化行动正在全面展开。',
+    'la1-cat':'供应链','la1-title':'友岸外包的现实：韩国企业供应链重组的成本与策略',
+    'la2-cat':'关键矿物','la2-title':'锂钴镍争夺战：韩国资源外交现状',
+    'la3-cat':'供应链','la3-title':'电池供应链自立：韩国材料零部件装备战略',
+    'la4-cat':'制裁','la4-title':'出口管制加强与韩国国防两用品出口风险',
+    'la5-cat':'半导体·AI','la5-title':'HBM市场竞争加剧：下一代存储芯片经济安全问题',
+    'da1-cat':'能源安全','da1-title':'氢经济与能源安全：韩国绿氢战略的挑战','da1-desc':'韩国同时追求碳中和与能源自立，本文评估其氢战略的现实可能性与局限性。',
+    'da2-cat':'能源安全','da2-title':'核电复兴与韩国核电出口：核能作为经济安全资产','da2-desc':'全球重新评价核能之际，韩国核电技术正作为新的经济安全资产受到关注。',
+    'da3-cat':'粮食安全','da3-title':'进口依存度75%：诊断韩国粮食安全的结构性脆弱性','da3-desc':'气候变化、战争和出口限制使全球粮食供应不稳，本文探讨韩国提升粮食自给率的战略。',
+    'newsletter-head':'订阅简报','newsletter-text':'每周通过电子邮件接收精选经济安全深度分析。','newsletter-placeholder':'输入您的电子邮件地址','newsletter-btn':'免费订阅',
+    'keywords-head':'主要关键词',
+    'footer-about-head':'关于我们','footer-about-text':'经济安全洞察是一家独立的专业媒体，深入分析技术竞争、半导体·AI、供应链、能源安全、粮食安全、关键矿物、经济制裁等经济安全全领域。',
+    'footer-cat-head':'分类','footer-media-head':'媒体','footer-info-head':'信息',
+    'footer-cat1':'技术竞争','footer-cat2':'半导体·AI','footer-cat3':'供应链','footer-cat4':'能源安全','footer-cat5':'粮食安全','footer-cat6':'关键矿物','footer-cat7':'制裁·出口管制',
+    'footer-med1':'投稿指南','footer-med2':'简报','footer-med3':'广告合作','footer-med4':'文章存档','footer-med5':'RSS',
+    'footer-inf1':'关于我们','footer-inf2':'编辑准则','footer-inf3':'隐私政策','footer-inf4':'使用条款','footer-inf5':'联系我们',
+    'footer-copy':'© 2026 经济安全洞察. 版权所有.','footer-priv':'隐私政策','footer-terms':'使用条款','footer-access':'无障碍',
+    'tag1':'半导体','tag2':'AI','tag3':'供应链','tag4':'能源安全','tag5':'粮食安全','tag6':'关键矿物','tag7':'出口管制','tag8':'经济制裁','tag9':'CHIPS法案','tag10':'量子技术','tag11':'电池','tag12':'锂','tag13':'LNG','tag14':'中美竞争','tag15':'友岸外包','tag16':'技术霸权','tag17':'数据主权','tag18':'网络安全',
+    'by-editorial':'编辑部','search-placeholder':'搜索文章...'
+  },
+  ru: {
+    'site-desc':'Ведущее корейское медиа по экономической безопасности','nav-newsletter':'Рассылка','nav-login':'Войти',
+    'site-name':'Инсайт экономической безопасности','site-sub':'Технологии · Полупроводники · ИИ · Цепочки поставок · Энергетика · Продбезопасность',
+    'nav-home':'Главная','nav-tech':'Технол. конкуренция','nav-semi':'Полупроводники·ИИ','nav-supply':'Цепочки поставок','nav-energy':'Энергобезопасность','nav-food':'Продбезопасность','nav-mineral':'Крит. материалы','nav-sanctions':'Санкции·Экспорт','nav-column':'Колонки',
+    'alert-label':'СРОЧНО','alert-text':'Минторг США объявил о новых экспортных ограничениях на передовые чипы ИИ — анализ влияния на корейские компании','read-more':'Читать полностью →',
+    'topics-label':'По темам','tab-all':'Все','tab-tech':'Технологии','tab-semi':'Полупроводники','tab-ai':'ИИ','tab-supply':'Цепочки поставок','tab-energy':'Энергетика','tab-food':'Продовольствие','tab-mineral':'Крит. материалы','tab-sanctions':'Санкции','tab-finance':'Фин. безопасность',
+    'sidebar-latest':'Последние статьи',
+    's1-cat':'Технол. конкуренция','s1-title':'Расширение экспортного контроля США в сфере ИИ: последствия для Кореи','s1-date':'13 июн. 2026',
+    's2-cat':'Цепочки поставок','s2-title':'Цепочки поставок крит. материалов: снижение зависимости от Китая','s2-date':'12 июн. 2026',
+    's3-cat':'Энергобезопасность','s3-title':'Два года без российского СПГ: изменения энергопортфеля Кореи','s3-date':'11 июн. 2026',
+    's4-cat':'Продбезопасность','s4-title':'Климатический кризис и войны дестабилизируют глобальные продовольственные цепочки','s4-date':'10 июн. 2026',
+    's5-cat':'Санкции','s5-title':'Санкции против России и Китая: бремя комплаенса для корейских компаний','s5-date':'9 июн. 2026',
+    'hero-cat':'УГЛУБЛЁННЫЙ АНАЛИЗ','hero-title':'Реструктуризация цепочек поставок полупроводников и стратегический выбор Кореи','hero-desc':'По мере обострения технологического соперничества США и Китая корейская полупроводниковая отрасль оказалась на беспрецедентном перекрёстке. Как найти баланс между краткосрочными рыночными выгодами и долгосрочной надёжностью альянса?','hero-btn':'Читать полностью','hero-byline':'Редакция · 14 июня 2026',
+    'sec-tech':'Технологическая конкуренция','sec-supply':'Цепочки поставок','sec-dark':'Энергобезопасность · Продбезопасность','view-all':'Смотреть все →',
+    'a1-cat':'Технол. конкуренция','a1-title':'Гонка квантовых вычислений и стратегическая позиция Кореи','a1-desc':'На фоне ускорения квантовых технологий в США, Китае и ЕС анализируется масштаб инвестиций и технологическое отставание Кореи.',
+    'a2-cat':'Полупроводники·ИИ','a2-title':'Два года после IRA и CHIPS Act: оценка корейской полупроводниковой и аккумуляторной отраслей','a2-desc':'Инвестиции корейских компаний в США резко возросли, однако дилемма между субсидиями и утечкой технологий сохраняется.',
+    'a3-cat':'ИИ','a3-title':'Генеративный ИИ и экономическая безопасность: когда технологическое превосходство становится государственной мощью','a3-desc':'Возможности ИИ становятся стратегическими активами в военной и экономической сферах, правительства ускоряют секьюритизацию ИИ.',
+    'la1-cat':'Цепочки поставок','la1-title':'Реальность френдшоринга: затраты и стратегии реструктуризации цепочек поставок',
+    'la2-cat':'Крит. материалы','la2-title':'Борьба за литий, кобальт и никель: ресурсная дипломатия Кореи',
+    'la3-cat':'Цепочки поставок','la3-title':'Независимость аккумуляторных цепочек поставок: стратегия материалов и компонентов',
+    'la4-cat':'Санкции','la4-title':'Ужесточение экспортного контроля и риски для оборонного экспорта Кореи',
+    'la5-cat':'Полупроводники·ИИ','la5-title':'Конкуренция на рынке HBM: память следующего поколения как вопрос экономической безопасности',
+    'da1-cat':'Энергобезопасность','da1-title':'Водородная экономика и энергетическая безопасность: вызовы зелёного водорода Кореи','da1-desc':'Корея одновременно стремится к углеродной нейтральности и энергетической независимости. Оцениваем реалистичность водородной стратегии.',
+    'da2-cat':'Энергобезопасность','da2-title':'Ядерный ренессанс и экспорт корейских АЭС: ядерная энергетика как экономический актив','da2-desc':'В условиях переоценки ядерной энергетики технология корейских АЭС становится новым активом экономической безопасности.',
+    'da3-cat':'Продбезопасность','da3-title':'Зависимость от импорта 75%: структурные уязвимости продовольственной безопасности Кореи','da3-desc':'Нестабильность глобального продовольственного снабжения подталкивает Корею к повышению самообеспеченности продовольствием.',
+    'newsletter-head':'Подписка на рассылку','newsletter-text':'Получайте еженедельный отборный анализ экономической безопасности на e-mail.','newsletter-placeholder':'Введите адрес электронной почты','newsletter-btn':'Подписаться бесплатно',
+    'keywords-head':'Ключевые темы',
+    'footer-about-head':'О нас','footer-about-text':'«Инсайт экономической безопасности» — независимое специализированное медиа, освещающее конкуренцию в технологиях, полупроводники, ИИ, цепочки поставок, энергетику, продбезопасность и санкции.',
+    'footer-cat-head':'Разделы','footer-media-head':'Медиа','footer-info-head':'Информация',
+    'footer-cat1':'Технол. конкуренция','footer-cat2':'Полупроводники·ИИ','footer-cat3':'Цепочки поставок','footer-cat4':'Энергобезопасность','footer-cat5':'Продбезопасность','footer-cat6':'Крит. материалы','footer-cat7':'Санкции',
+    'footer-med1':'Написать нам','footer-med2':'Рассылка','footer-med3':'Реклама','footer-med4':'Архив','footer-med5':'RSS',
+    'footer-inf1':'О нас','footer-inf2':'Редакционные стандарты','footer-inf3':'Конфиденциальность','footer-inf4':'Условия использования','footer-inf5':'Контакты',
+    'footer-copy':'© 2026 Инсайт экономической безопасности. Все права защищены.','footer-priv':'Конфиденциальность','footer-terms':'Условия','footer-access':'Доступность',
+    'tag1':'Полупроводники','tag2':'ИИ','tag3':'Цепочки поставок','tag4':'Энергобезопасность','tag5':'Продбезопасность','tag6':'Крит. материалы','tag7':'Экспортный контроль','tag8':'Эконом. санкции','tag9':'CHIPS Act','tag10':'Квантовые технологии','tag11':'Аккумуляторы','tag12':'Литий','tag13':'СПГ','tag14':'США-Китай','tag15':'Френдшоринг','tag16':'Технол. гегемония','tag17':'Цифровой суверенитет','tag18':'Кибербезопасность',
+    'by-editorial':'Редакция','search-placeholder':'Поиск статей...'
+  },
+  ar: {
+    'site-desc':'الوسيلة الإعلامية الكورية المتخصصة في الأمن الاقتصادي','nav-newsletter':'النشرة الإخبارية','nav-login':'تسجيل الدخول',
+    'site-name':'رؤية الأمن الاقتصادي','site-sub':'التكنولوجيا المتقدمة · أشباه الموصلات · AI · سلاسل التوريد · الطاقة · أمن الغذاء',
+    'nav-home':'الرئيسية','nav-tech':'التنافس التقني','nav-semi':'أشباه الموصلات·AI','nav-supply':'سلاسل التوريد','nav-energy':'أمن الطاقة','nav-food':'أمن الغذاء','nav-mineral':'المعادن الحيوية','nav-sanctions':'العقوبات والتصدير','nav-column':'مقالات',
+    'alert-label':'عاجل','alert-text':'وزارة التجارة الأمريكية تعلن ضوابط تصدير إضافية على رقائق الذكاء الاصطناعي المتقدمة — تحليل التأثير على الشركات الكورية','read-more':'اقرأ المزيد ←',
+    'topics-label':'تصفح حسب الموضوع','tab-all':'الكل','tab-tech':'التكنولوجيا','tab-semi':'أشباه الموصلات','tab-ai':'الذكاء الاصطناعي','tab-supply':'سلاسل التوريد','tab-energy':'الطاقة','tab-food':'الغذاء','tab-mineral':'المعادن الحيوية','tab-sanctions':'العقوبات','tab-finance':'الأمن المالي',
+    'sidebar-latest':'أحدث المقالات',
+    's1-cat':'التنافس التقني','s1-title':'توسع ضوابط التصدير الأمريكية لـ AI وتأثيرها على كوريا','s1-date':'١٣ يونيو ٢٠٢٦',
+    's2-cat':'سلاسل التوريد','s2-title':'سلاسل توريد المعادن الحيوية: الحد من الاعتماد على الصين','s2-date':'١٢ يونيو ٢٠٢٦',
+    's3-cat':'أمن الطاقة','s3-title':'عامان على تحول الغاز المسال بعيداً عن روسيا','s3-date':'١١ يونيو ٢٠٢٦',
+    's4-cat':'أمن الغذاء','s4-title':'أزمة المناخ والحروب تزعزع سلاسل الغذاء العالمية','s4-date':'١٠ يونيو ٢٠٢٦',
+    's5-cat':'العقوبات','s5-title':'عقوبات روسيا والصين تُثقل أعباء الامتثال على الشركات الكورية','s5-date':'٩ يونيو ٢٠٢٦',
+    'hero-cat':'تحليل معمّق','hero-title':'إعادة هيكلة سلاسل توريد أشباه الموصلات والخيارات الاستراتيجية لكوريا','hero-desc':'مع تصاعد التنافس التكنولوجي بين الولايات المتحدة والصين، تقف صناعة أشباه الموصلات الكورية أمام مفترق طرق غير مسبوق. كيف توازن بين المكاسب السوقية قصيرة المدى ومصداقية التحالف طويل المدى؟','hero-btn':'اقرأ المقال كاملاً','hero-byline':'هيئة التحرير · ١٤ يونيو ٢٠٢٦',
+    'sec-tech':'التنافس التكنولوجي','sec-supply':'سلاسل التوريد','sec-dark':'أمن الطاقة · أمن الغذاء','view-all':'عرض الكل ←',
+    'a1-cat':'التنافس التقني','a1-title':'سباق الحوسبة الكمومية والموقع الاستراتيجي لكوريا','a1-desc':'مع تسارع تطوير التكنولوجيا الكمومية في أمريكا والصين وأوروبا، يشخّص هذا التحليل حجم استثمارات كوريا وفجوتها التكنولوجية.',
+    'a2-cat':'أشباه الموصلات·AI','a2-title':'عامان على IRA وCHIPS Act: تقييم صناعتَي أشباه الموصلات والبطاريات الكورية','a2-desc':'ارتفعت استثمارات الشركات الكورية في أمريكا بشكل حاد، لكن المعضلة بين فوائد الدعم ومخاوف تسرب التكنولوجيا لا تزال قائمة.',
+    'a3-cat':'الذكاء الاصطناعي','a3-title':'الذكاء الاصطناعي التوليدي والأمن الاقتصادي: حين يصبح التفوق التقني قوةً وطنية','a3-desc':'تتحول قدرات الذكاء الاصطناعي إلى أصول استراتيجية عبر المجالين العسكري والاقتصادي، مما يدفع الحكومات لتسريع أمننة الذكاء الاصطناعي.',
+    'la1-cat':'سلاسل التوريد','la1-title':'واقع الـ Friendshoring: تكاليف وإستراتيجيات إعادة الهيكلة للشركات الكورية',
+    'la2-cat':'المعادن الحيوية','la2-title':'سباق الليثيوم والكوبالت والنيكل: دبلوماسية الموارد الكورية',
+    'la3-cat':'سلاسل التوريد','la3-title':'استقلالية سلسلة توريد البطاريات: إستراتيجية المواد والمكونات الكورية',
+    'la4-cat':'العقوبات','la4-title':'تشديد نظام ضبط الصادرات ومخاطر صادرات الدفاع الكورية',
+    'la5-cat':'أشباه الموصلات·AI','la5-title':'هيمنة سوق HBM وتصاعد المنافسة: ذاكرة الجيل التالي كقضية أمن اقتصادي',
+    'da1-cat':'أمن الطاقة','da1-title':'اقتصاد الهيدروجين والأمن الطاقوي: تحديات إستراتيجية الهيدروجين الأخضر لكوريا','da1-desc':'تسعى كوريا في آنٍ واحد إلى الحياد الكربوني والاستقلال الطاقوي. نقيّم الإمكانات الواقعية لإستراتيجية الهيدروجين وحدودها.',
+    'da2-cat':'أمن الطاقة','da2-title':'نهضة الطاقة النووية وصادرات كوريا: الطاقة النووية بوصفها أصلاً للأمن الاقتصادي','da2-desc':'وسط إعادة تقييم الطاقة النووية عالمياً، تبرز التكنولوجيا النووية الكورية أصلاً جديداً للأمن الاقتصادي.',
+    'da3-cat':'أمن الغذاء','da3-title':'اعتماد 75% على الاستيراد: تشخيص الهشاشة الهيكلية للأمن الغذائي الكوري','da3-desc':'مع تزايد عدم استقرار الإمدادات الغذائية العالمية، نستعرض إستراتيجيات كوريا لرفع الاكتفاء الذاتي الغذائي.',
+    'newsletter-head':'النشرة الإخبارية','newsletter-text':'تلقّ تحليلات الأمن الاقتصادي المنتقاة أسبوعياً على بريدك الإلكتروني.','newsletter-placeholder':'أدخل عنوان بريدك الإلكتروني','newsletter-btn':'اشترك مجاناً',
+    'keywords-head':'الكلمات المفتاحية',
+    'footer-about-head':'من نحن','footer-about-text':'رؤية الأمن الاقتصادي وسيلة إعلامية مستقلة متخصصة تغطي جميع مجالات الأمن الاقتصادي: التنافس التكنولوجي، أشباه الموصلات، الذكاء الاصطناعي، سلاسل التوريد، أمن الطاقة والغذاء، المعادن الحيوية، والعقوبات الاقتصادية.',
+    'footer-cat-head':'التصنيفات','footer-media-head':'الإعلام','footer-info-head':'معلومات',
+    'footer-cat1':'التنافس التقني','footer-cat2':'أشباه الموصلات·AI','footer-cat3':'سلاسل التوريد','footer-cat4':'أمن الطاقة','footer-cat5':'أمن الغذاء','footer-cat6':'المعادن الحيوية','footer-cat7':'العقوبات',
+    'footer-med1':'إرشادات المساهمة','footer-med2':'النشرة الإخبارية','footer-med3':'الإعلانات','footer-med4':'الأرشيف','footer-med5':'RSS',
+    'footer-inf1':'من نحن','footer-inf2':'معايير التحرير','footer-inf3':'سياسة الخصوصية','footer-inf4':'شروط الاستخدام','footer-inf5':'اتصل بنا',
+    'footer-copy':'© 2026 رؤية الأمن الاقتصادي. جميع الحقوق محفوظة.','footer-priv':'سياسة الخصوصية','footer-terms':'شروط الاستخدام','footer-access':'إمكانية الوصول',
+    'tag1':'أشباه الموصلات','tag2':'الذكاء الاصطناعي','tag3':'سلاسل التوريد','tag4':'أمن الطاقة','tag5':'أمن الغذاء','tag6':'المعادن الحيوية','tag7':'ضبط الصادرات','tag8':'عقوبات اقتصادية','tag9':'CHIPS Act','tag10':'التكنولوجيا الكمومية','tag11':'البطاريات','tag12':'الليثيوم','tag13':'الغاز المسال','tag14':'التنافس الأمريكي الصيني','tag15':'Friendshoring','tag16':'الهيمنة التقنية','tag17':'السيادة الرقمية','tag18':'الأمن السيبراني',
+    'by-editorial':'هيئة التحرير','search-placeholder':'ابحث في المقالات...'
+  },
+  es: {
+    'site-desc':'El medio especializado de seguridad económica de Corea','nav-newsletter':'Boletín','nav-login':'Iniciar sesión',
+    'site-name':'Perspectiva de Seguridad Económica','site-sub':'Tecnología Avanzada · Semiconductores · IA · Cadenas de Suministro · Energía · Seguridad Alimentaria',
+    'nav-home':'Inicio','nav-tech':'Competencia Tecnológica','nav-semi':'Semiconductores·IA','nav-supply':'Cadenas de Suministro','nav-energy':'Seguridad Energética','nav-food':'Seguridad Alimentaria','nav-mineral':'Minerales Críticos','nav-sanctions':'Sanciones·Controles','nav-column':'Columnas',
+    'alert-label':'URGENTE','alert-text':'El Departamento de Comercio de EE.UU. anuncia controles adicionales sobre chips de IA avanzados — análisis del impacto en empresas coreanas','read-more':'Leer más →',
+    'topics-label':'Explorar por tema','tab-all':'Todo','tab-tech':'Tecnología Avanzada','tab-semi':'Semiconductores','tab-ai':'IA','tab-supply':'Cadena de Suministro','tab-energy':'Energía','tab-food':'Alimentaria','tab-mineral':'Min. Críticos','tab-sanctions':'Sanciones','tab-finance':'Seguridad Financiera',
+    'sidebar-latest':'Últimos Artículos',
+    's1-cat':'Competencia Tecnológica','s1-title':'Ampliación del control de exportación de IA por EE.UU. y su impacto en Corea','s1-date':'13 jun. 2026',
+    's2-cat':'Cadenas de Suministro','s2-title':'Cadenas de suministro de minerales críticos: estado actual de reducción de dependencia de China','s2-date':'12 jun. 2026',
+    's3-cat':'Seg. Energética','s3-title':'Dos años tras la transición del GNL ruso: cambios en la cartera energética de Corea','s3-date':'11 jun. 2026',
+    's4-cat':'Seg. Alimentaria','s4-title':'La crisis climática y las guerras desestabilizan las cadenas alimentarias mundiales','s4-date':'10 jun. 2026',
+    's5-cat':'Sanciones','s5-title':'Las sanciones a Rusia y China aumentan la carga de cumplimiento en empresas coreanas','s5-date':'9 jun. 2026',
+    'hero-cat':'ANÁLISIS EN PROFUNDIDAD','hero-title':'Reestructuración de la Cadena de Suministro de Semiconductores y las Opciones Estratégicas de Corea','hero-desc':'A medida que se intensifica la competencia tecnológica entre EE.UU. y China, la industria de semiconductores de Corea se halla en una encrucijada sin precedentes. ¿Cómo equilibrar las ganancias a corto plazo con la credibilidad de la alianza a largo plazo?','hero-btn':'Leer artículo completo','hero-byline':'Equipo editorial · 14 de junio de 2026',
+    'sec-tech':'Competencia Tecnológica','sec-supply':'Cadenas de Suministro','sec-dark':'Seguridad Energética · Seguridad Alimentaria','view-all':'Ver todo →',
+    'a1-cat':'Competencia Tecnológica','a1-title':'Carrera por la computación cuántica y la posición estratégica de Corea','a1-desc':'Mientras EE.UU., China y la UE aceleran el desarrollo de tecnología cuántica, se diagnostica la brecha tecnológica e inversión de Corea.',
+    'a2-cat':'Semiconductores·IA','a2-title':'Dos años después de IRA y CHIPS Act: evaluación de las industrias de semiconductores y baterías de Corea','a2-desc':'Las inversiones de empresas coreanas en EE.UU. se han disparado, pero el dilema entre subsidios y fuga tecnológica persiste.',
+    'a3-cat':'IA','a3-title':'IA generativa y seguridad económica: cuando la supremacía tecnológica se convierte en poder nacional','a3-desc':'Las capacidades de IA se convierten en activos estratégicos tanto en el ámbito militar como económico, acelerando la securitización de la IA.',
+    'la1-cat':'Cadenas de Suministro','la1-title':'La realidad del friendshoring: costos y estrategias de reestructuración para empresas coreanas',
+    'la2-cat':'Min. Críticos','la2-title':'Carrera por litio, cobalto y níquel: estado de la diplomacia de recursos de Corea',
+    'la3-cat':'Cadenas de Suministro','la3-title':'Independencia en la cadena de suministro de baterías: estrategia de materiales y componentes',
+    'la4-cat':'Sanciones','la4-title':'Refuerzo del control de exportación y riesgos para las exportaciones de defensa de Corea',
+    'la5-cat':'Semiconductores·IA','la5-title':'Dominio del mercado HBM y competencia creciente: la memoria de próxima generación como cuestión de seguridad económica',
+    'da1-cat':'Seg. Energética','da1-title':'Economía del hidrógeno y seguridad energética: desafíos de la estrategia de hidrógeno verde de Corea','da1-desc':'Corea persigue simultáneamente la neutralidad de carbono y la independencia energética. Evaluamos las posibilidades y límites reales.',
+    'da2-cat':'Seg. Energética','da2-title':'Renacimiento nuclear y exportaciones nucleares coreanas: la energía nuclear como activo de seguridad económica','da2-desc':'Amid la revalorización global de la energía nuclear, la tecnología nuclear coreana surge como nuevo activo de seguridad económica.',
+    'da3-cat':'Seg. Alimentaria','da3-title':'75% de dependencia de importaciones: diagnóstico de las vulnerabilidades estructurales de la seguridad alimentaria de Corea','da3-desc':'Ante la inestabilidad del suministro alimentario global, examinamos las estrategias de Corea para elevar su autosuficiencia alimentaria.',
+    'newsletter-head':'Suscripción al boletín','newsletter-text':'Reciba semanalmente análisis seleccionados de seguridad económica por correo electrónico.','newsletter-placeholder':'Ingrese su correo electrónico','newsletter-btn':'Suscribirse gratis',
+    'keywords-head':'Temas clave',
+    'footer-about-head':'Acerca de','footer-about-text':'Perspectiva de Seguridad Económica es un medio independiente especializado que cubre la competencia tecnológica, semiconductores·IA, cadenas de suministro, energía, seguridad alimentaria, minerales críticos y sanciones.',
+    'footer-cat-head':'Categorías','footer-media-head':'Medios','footer-info-head':'Información',
+    'footer-cat1':'Competencia Tecnológica','footer-cat2':'Semiconductores·IA','footer-cat3':'Cadenas de Suministro','footer-cat4':'Seg. Energética','footer-cat5':'Seg. Alimentaria','footer-cat6':'Min. Críticos','footer-cat7':'Sanciones',
+    'footer-med1':'Contribuir','footer-med2':'Boletín','footer-med3':'Publicidad','footer-med4':'Archivo','footer-med5':'RSS',
+    'footer-inf1':'Sobre nosotros','footer-inf2':'Estándares editoriales','footer-inf3':'Política de privacidad','footer-inf4':'Términos de uso','footer-inf5':'Contacto',
+    'footer-copy':'© 2026 Perspectiva de Seguridad Económica. Todos los derechos reservados.','footer-priv':'Privacidad','footer-terms':'Términos','footer-access':'Accesibilidad',
+    'tag1':'Semiconductores','tag2':'IA','tag3':'Cadena de Suministro','tag4':'Seg. Energética','tag5':'Seg. Alimentaria','tag6':'Min. Críticos','tag7':'Control de Exportación','tag8':'Sanciones Económicas','tag9':'CHIPS Act','tag10':'Tecnología Cuántica','tag11':'Baterías','tag12':'Litio','tag13':'GNL','tag14':'Competencia EE.UU.-China','tag15':'Friendshoring','tag16':'Hegemonía Tecnológica','tag17':'Soberanía de Datos','tag18':'Ciberseguridad',
+    'by-editorial':'Equipo editorial','search-placeholder':'Buscar artículos...'
+  }
+};
+
+let currentLang = 'ko';
+
+function setLanguage(lang) {
+  if (!T[lang]) return;
+  currentLang = lang;
+
+  // HTML lang & dir
+  const isRTL = (lang === 'ar');
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+
+  // 모든 data-i18n 요소 업데이트
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (T[lang][key] !== undefined) {
+      el.textContent = T[lang][key];
+    }
+  });
+
+  // 검색창 placeholder
+  const searchInput = document.getElementById('search-input');
+  if (searchInput && T[lang]['search-placeholder']) {
+    searchInput.placeholder = T[lang]['search-placeholder'];
+  }
+  // 뉴스레터 input placeholder
+  const emailInput = document.getElementById('newsletter-email');
+  if (emailInput && T[lang]['newsletter-placeholder']) {
+    emailInput.placeholder = T[lang]['newsletter-placeholder'];
+  }
+
+  // 언어 버튼 활성화
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // 아랍어: alert-label 배경 텍스트 방향 고려
+  const alertLabel = document.querySelector('.alert-label');
+  if (alertLabel) {
+    alertLabel.style.letterSpacing = isRTL ? '0' : '.1em';
+  }
+}
+
+// 브라우저 저장된 언어 불러오기 (선택적)
+(function() {
+  try {
+    const saved = localStorage.getItem('esi-lang');
+    if (saved && T[saved]) setLanguage(saved);
+  } catch(e) {}
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOOMBERG-STYLE LIVE MARKET DATA ENGINE
+   Random-walk simulation — 4-second refresh cycle
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+
+  // ── 지표 데이터 정의 (val: 현재가, vol: 변동성, fmt: 포맷 함수) ──
+  const mkt = {
+    // 에너지
+    'wti':    { val: 82.45,  vol: 0.0030, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    'brent':  { val: 85.20,  vol: 0.0025, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    'dubai':  { val: 84.75,  vol: 0.0025, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    'natgas': { val: 2.85,   vol: 0.0045, fmt: v => v.toFixed(3),           pre: '',   suf: '' },
+    'lng':    { val: 12.40,  vol: 0.0060, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    'coal':   { val: 134.50, vol: 0.0020, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    // 환율
+    'usdkrw': { val: 1348.5, vol: 0.0012, fmt: v => v.toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g,','), pre: '', suf: '' },
+    'usdjpy': { val: 155.85, vol: 0.0018, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    'eurusd': { val: 1.0825, vol: 0.0010, fmt: v => v.toFixed(4),           pre: '',   suf: '' },
+    'usdcny': { val: 7.248,  vol: 0.0008, fmt: v => v.toFixed(3),           pre: '',   suf: '' },
+    'usdrub': { val: 89.45,  vol: 0.0050, fmt: v => v.toFixed(2),           pre: '',   suf: '' },
+    // 반도체
+    'dram':   { val: 3.42,   vol: 0.0035, fmt: v => '$' + v.toFixed(2),     pre: '',   suf: '' },
+    'nand':   { val: 0.058,  vol: 0.0040, fmt: v => '$' + v.toFixed(3),     pre: '',   suf: '' },
+    'hbm':    { val: 16.20,  vol: 0.0050, fmt: v => '$' + v.toFixed(2),     pre: '',   suf: '' },
+    'wafer':  { val: 125.0,  vol: 0.0015, fmt: v => '$' + v.toFixed(1),     pre: '',   suf: '' },
+    // 석유화학
+    'eth':    { val: 780,    vol: 0.0025, fmt: v => Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','), pre: '', suf: '' },
+    'prop':   { val: 845,    vol: 0.0030, fmt: v => Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','), pre: '', suf: '' },
+    'px':     { val: 982,    vol: 0.0028, fmt: v => Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','), pre: '', suf: '' },
+    'benz':   { val: 1028,   vol: 0.0035, fmt: v => Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','), pre: '', suf: '' },
+    'meg':    { val: 465,    vol: 0.0040, fmt: v => Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','), pre: '', suf: '' },
+  };
+
+  // ── 시간 포맷 헬퍼 ──
+  function hhmmss() {
+    const d = new Date();
+    return [d.getHours(), d.getMinutes(), d.getSeconds()]
+      .map(n => String(n).padStart(2,'0')).join(':');
+  }
+  function hhmm() {
+    const d = new Date();
+    return [d.getHours(), d.getMinutes()]
+      .map(n => String(n).padStart(2,'0')).join(':') + ' KST';
+  }
+
+  // ── DOM 플래시 헬퍼 ──
+  function flash(el, cls) {
+    if (!el) return;
+    el.classList.remove('flash-up','flash-down');
+    // Force reflow
+    void el.offsetWidth;
+    el.classList.add(cls);
+    setTimeout(() => el.classList.remove(cls), 700);
+  }
+
+  // ── 단일 지표 업데이트 ──
+  function updateItem(key, valEl, chgEl) {
+    const d = mkt[key];
+    if (!d || !valEl) return;
+
+    const prev = d.val;
+    // Gaussian-approximate random walk: Box-Muller
+    const u1 = Math.random(), u2 = Math.random();
+    const z = Math.sqrt(-2 * Math.log(u1 || 1e-9)) * Math.cos(2 * Math.PI * u2);
+    d.val = Math.max(prev * (1 + d.vol * z), 0.0001);
+
+    const pct = ((d.val - prev) / prev) * 100;
+    const up = d.val >= prev;
+
+    valEl.textContent = d.fmt(d.val);
+    flash(valEl, up ? 'flash-up' : 'flash-down');
+
+    if (chgEl) {
+      const arrow = up ? '▲' : '▼';
+      chgEl.textContent = arrow + Math.abs(pct).toFixed(2) + '%';
+      chgEl.className = 'mkt-chg ' + (up ? 'up' : 'down');
+    }
+  }
+
+  // ── 상단 스트립 미러 업데이트 ──
+  function updateStrip(key, valId, chgId) {
+    const d = mkt[key];
+    if (!d) return;
+    const ve = document.getElementById(valId);
+    const ce = document.getElementById(chgId);
+    if (!ve) return;
+    ve.textContent = d.fmt(d.val);
+    if (ce) {
+      // 스트립은 별도 추적 없이 현재값만 표시
+      const prev = d.val; // already updated by updateItem
+      ce.className = 'ms-chg ' + (ce.classList.contains('up') ? 'up' : 'down');
+    }
+  }
+
+  // ── 전체 업데이트 사이클 ──
+  function updateMkt() {
+    const now = hhmm();
+
+    // 에너지 패널
+    ['wti','brent','dubai','natgas','lng','coal'].forEach(k => {
+      updateItem(k,
+        document.getElementById('v-'+k),
+        document.getElementById('c-'+k));
+    });
+    const tsE = document.getElementById('ts-energy');
+    if (tsE) tsE.textContent = '최종 업데이트: ' + now;
+
+    // 환율 패널
+    ['usdkrw','usdjpy','eurusd','usdcny','usdrub'].forEach(k => {
+      updateItem(k,
+        document.getElementById('v-'+k),
+        document.getElementById('c-'+k));
+    });
+    const tsF = document.getElementById('ts-fx');
+    if (tsF) tsF.textContent = '최종 업데이트: ' + now;
+
+    // 반도체 패널
+    ['dram','nand','hbm','wafer'].forEach(k => {
+      updateItem(k,
+        document.getElementById('v-'+k),
+        document.getElementById('c-'+k));
+    });
+    const tsS = document.getElementById('ts-semi');
+    if (tsS) tsS.textContent = '최종 업데이트: ' + now;
+
+    // 석유화학 패널
+    ['eth','prop','px','benz','meg'].forEach(k => {
+      updateItem(k,
+        document.getElementById('v-'+k),
+        document.getElementById('c-'+k));
+    });
+    const tsP = document.getElementById('ts-petro');
+    if (tsP) tsP.textContent = '최종 업데이트: ' + now;
+
+    // 상단 스트립 미러 업데이트
+    const stripMap = [
+      ['wti',    'ms-wti',    'ms-wti-c'],
+      ['brent',  'ms-brent',  'ms-brent-c'],
+      ['dubai',  'ms-dubai',  'ms-dubai-c'],
+      ['lng',    'ms-lng',    'ms-lng-c'],
+      ['usdkrw', 'ms-krw',    'ms-krw-c'],
+      ['eurusd', 'ms-eur',    'ms-eur-c'],
+      ['usdjpy', 'ms-jpy',    'ms-jpy-c'],
+      ['usdcny', 'ms-cny',    'ms-cny-c'],
+      ['dram',   'ms-dram',   'ms-dram-c'],
+      ['hbm',    'ms-hbm',    'ms-hbm-c'],
+      ['px',     'ms-px',     'ms-px-c'],
+      ['eth',    'ms-eth',    'ms-eth-c'],
+      ['natgas', 'ms-natgas', 'ms-natgas-c'],
+    ];
+    stripMap.forEach(([key, vid, cid]) => {
+      const d = mkt[key];
+      if (!d) return;
+      const ve = document.getElementById(vid);
+      const ce = document.getElementById(cid);
+      if (!ve) return;
+      ve.textContent = d.fmt(d.val);
+      // For strip chg labels, reuse sidebar chg direction
+      const sideChg = document.getElementById('c-'+key);
+      if (ce && sideChg) {
+        ce.textContent = sideChg.textContent;
+        ce.className = 'ms-chg ' + (sideChg.classList.contains('up') ? 'up' : 'down');
+      }
+    });
+  }
+
+  // ── 시계 ──
+  function updateClock() {
+    const el = document.getElementById('mkt-clock');
+    if (el) el.textContent = hhmmss();
+  }
+
+  // ── 초기화 및 타이머 ──
+  document.addEventListener('DOMContentLoaded', function() {
+    updateClock();
+    updateMkt();
+    setInterval(updateMkt, 4000);
+    setInterval(updateClock, 1000);
+  });
+
+})();
+</script>
+
 </body>
 </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
